@@ -9,36 +9,58 @@
     td { padding: 0; text-align: center; }
   </style>
 <script type="text/javascript">
-var imgname;
 
-function getImgName() {
-  var url = document.URL;   // could also use window.location
-  var lastslash = url.lastIndexOf("?");
-  if (lastslash > 0) {
-    imgname = url.substring(lastslash+1, url.length);
+Requests = {
+  QueryString : function(item){
+    var svalue = location.search.match(new RegExp("[\?\&]"
+                                       + item + "=([^\&]*)(\&?)", "i"));
+    return svalue ? svalue[1] : svalue;
   }
+}
+
+function onLoad() {
+  imgname = Requests.QueryString("img");
+  title = Requests.QueryString("title");
+  //alert("img: " + imgname + "\ntitle: " + title);
+
   if (checkNotes && imgname) {
     checkNotes(imgname);
   }
 
   var img = document.getElementById("fullpage");
-  if (imgname) img.src = imgname;
-  else alert("No imgname!");
+  if (imgname) {
+    img.src = imgname;
+    document.title += ": " + imgname;
+  }
+
+  if (title) {
+    titlediv = document.getElementById("title")
+    titlediv.style.backgroundColor = "white";
+    titlediv.style.opacity = 0.75;
+    // Unbelievably, javascript doesn't have an unescape or decode function
+    // that handles space/+ conversions. Because it's only something
+    // every browser ever written does.
+    titlediv.innerHTML = title.replace(/\+/g, ' ');
+  }
 
   initpage();
 }
+
 </script>
 </head>
 
-<body onload="getImgName();">
+<body onload="onLoad();">
+
+<h1 id="title" style="position: absolute; top: 0em; left: 0em; z-index: 100"></h1>
+
 <span id="navigation">
   <a href="" accesskey="P" onclick="prevSlide(); return false;">Previous</a> |
   <a href="" accesskey="B" onclick="prevSlide(); return false;"></a>
   <a href="" accesskey="N" onclick="nextSlide(); return false;">Next</a>
 </span>
 
-<div id="titlepage">
-<table border=1 width=100% height=100%><tr><td align=center valign=center>
+<div id="page">
+<table width=100% height=100%><tr><td align=center valign=center>
 <img id="fullpage">
 </table>
 

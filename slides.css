@@ -55,6 +55,8 @@ img.fullpage {
   font-family: sans-serif;
   font-size: 24px;
   line-height: 1.4em;
+  max-width: 330px;
+  overflow: hidden !important;
 }
 
 #nextdiv {
@@ -62,6 +64,8 @@ img.fullpage {
   font-size: 24px;
   line-height: 1.4em;
   text-align: right;
+  max-width: 330px;
+  overflow: hidden !important;
 }
 
 #content {
@@ -142,7 +146,8 @@ em { font-style: italic; font-weight: bold; }
   list-style-image: none;
 }
 
-li { margin-top: .8em; margin-bottom: .4em; line-height: 1.3em; }
+li { margin-top: .8em; margin-bottom: .4em; padding-left: .4em;
+     line-height: 1.3em; }
 
 ul.tight li { font-size: .8em; margin-top: 1em; line-height: 1.1em; }
 
