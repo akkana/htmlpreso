@@ -2,7 +2,7 @@
 <head>
   <script src="navigate.js"></script>
   <link rel="stylesheet" type="text/css" href="slides.css">
-  <title>Slide Presentations in HTML and JavaScript</title>
+  <title>Slide Presentations in HTML and JavaScript: Navigation Span</title>
 </head>
 
 <body onload="initpage();">
@@ -14,17 +14,21 @@
 
 <div id="page">    
 <div id="content">
-<h1 class="title" onclick="nextSlide()"
- ondblclick="prevSlide()">Slide Presentations in HTML and JavaScript</h1>
-<i>
-<br>
-by Akkana Peck
-<br>
-Last updated January 2016
-</i>
 
-<br><br>
-Next slide: spacebar, page down, or right arrow.
+<h1 class="title" onclick="nextSlide()"
+ ondblclick="prevSlide()">Navigation Span</h1>
+
+<p>
+Then add to slides.css:
+<pre>
+#navigation { display: none; }
+</pre>
+
+<p>
+That will make it invisible. Change it to <code>display: inline</code>
+to enable it. e.g. to show slides on the web.
+</div>
+
 </div>
 </div>
 

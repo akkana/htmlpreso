@@ -2,7 +2,7 @@
 <head>
   <script src="navigate.js"></script>
   <link rel="stylesheet" type="text/css" href="slides.css">
-  <title>Slide Presentations in HTML and JavaScript</title>
+  <title>Slide Presentations in HTML and JavaScript: Setting Up Lists</title>
 </head>
 
 <body onload="initpage();">
@@ -15,16 +15,19 @@
 <div id="page">    
 <div id="content">
 <h1 class="title" onclick="nextSlide()"
- ondblclick="prevSlide()">Slide Presentations in HTML and JavaScript</h1>
-<i>
-<br>
-by Akkana Peck
-<br>
-Last updated January 2016
-</i>
+ ondblclick="prevSlide()">Setting Up Lists</h1>
 
-<br><br>
-Next slide: spacebar, page down, or right arrow.
+<p>
+If you want lines without bullets, use &lt;ul&gt; and &lt;li&gt; anyway
+and use the "nobullets" CSS class:
+
+<pre>
+&lt;ul id="points" class="nobullets"&gt;
+  &lt;li&gt;A point I want to start with
+  &lt;li&gt;Something I want to add later.
+&lt;/ul&gt;
+</pre>
+
 </div>
 </div>
 

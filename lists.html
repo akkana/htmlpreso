@@ -2,10 +2,10 @@
 <head>
   <script src="navigate.js"></script>
   <link rel="stylesheet" type="text/css" href="slides.css">
-  <title>Slide Presentations in HTML and JavaScript</title>
+  <title>Slide Presentations in HTML and JavaScript: Lists</title>
 </head>
 
-<body onload="initpage();">
+<body onload="initPoints();">
 <span id="navigation">
   <a href="" accesskey="P" onclick="prevSlide(); return false;">Previous</a> |
   <a href="" accesskey="B" onclick="prevSlide(); return false;"></a>
@@ -15,16 +15,17 @@
 <div id="page">    
 <div id="content">
 <h1 class="title" onclick="nextSlide()"
- ondblclick="prevSlide()">Slide Presentations in HTML and JavaScript</h1>
-<i>
-<br>
-by Akkana Peck
-<br>
-Last updated January 2016
-</i>
+ ondblclick="prevSlide()">Lists</h1>
 
-<br><br>
-Next slide: spacebar, page down, or right arrow.
+<p>
+You can also show lists one bullet-item at a time:
+
+<ul id="points">
+<li>One item
+<li>Another item
+<li>And a third
+</ul>
+
 </div>
 </div>
 

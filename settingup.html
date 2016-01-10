@@ -2,7 +2,7 @@
 <head>
   <script src="navigate.js"></script>
   <link rel="stylesheet" type="text/css" href="slides.css">
-  <title>Slide Presentations in HTML and JavaScript</title>
+  <title>Slide Presentations in HTML and JavaScript: Setting Up</title>
 </head>
 
 <body onload="initpage();">
@@ -15,16 +15,20 @@
 <div id="page">    
 <div id="content">
 <h1 class="title" onclick="nextSlide()"
- ondblclick="prevSlide()">Slide Presentations in HTML and JavaScript</h1>
-<i>
-<br>
-by Akkana Peck
-<br>
-Last updated January 2016
-</i>
+ ondblclick="prevSlide()">Setting Up a Presentation</h1>
 
-<br><br>
-Next slide: spacebar, page down, or right arrow.
+<p>
+Edit <a href="navigate.js">navigate.js</a>.
+At the beginning you'll see the <i>slides</i> array:
+
+<pre>
+var slides = new Array ( "index.html",
+[ ... ]
+                 "conclusion.html" );
+</pre>
+<p>
+Edit this array to insert the names of your own slides, in order.
+
 </div>
 </div>
 

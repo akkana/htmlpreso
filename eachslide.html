@@ -2,7 +2,7 @@
 <head>
   <script src="navigate.js"></script>
   <link rel="stylesheet" type="text/css" href="slides.css">
-  <title>Slide Presentations in HTML and JavaScript</title>
+  <title>Slide Presentations in HTML and JavaScript: Each Slide</title>
 </head>
 
 <body onload="initpage();">
@@ -15,16 +15,20 @@
 <div id="page">    
 <div id="content">
 <h1 class="title" onclick="nextSlide()"
- ondblclick="prevSlide()">Slide Presentations in HTML and JavaScript</h1>
-<i>
-<br>
-by Akkana Peck
-<br>
-Last updated January 2016
-</i>
+ ondblclick="prevSlide()">Setting Up Each Slide</h1>
 
-<br><br>
-Next slide: spacebar, page down, or right arrow.
+<p>
+Each slide must contain this line in the HTML &lt;head&gt;:
+
+<pre>
+  &lt;script src="navigate.js"&gt;&lt;/script&gt;
+</pre>
+
+If you want "next slide" links, add this to the &lt;body&gt;:
+<pre>
+  &lt;body onload="initpage();"&gt;
+</pre>
+
 </div>
 </div>
 

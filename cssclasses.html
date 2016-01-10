@@ -2,10 +2,10 @@
 <head>
   <script src="navigate.js"></script>
   <link rel="stylesheet" type="text/css" href="slides.css">
-  <title>Slide Presentations in HTML and JavaScript</title>
+  <title>Slide Presentations in HTML and JavaScript: CSS</title>
 </head>
 
-<body onload="initpage();">
+<body onload="initPoints(2);">
 <span id="navigation">
   <a href="" accesskey="P" onclick="prevSlide(); return false;">Previous</a> |
   <a href="" accesskey="B" onclick="prevSlide(); return false;"></a>
@@ -15,16 +15,16 @@
 <div id="page">    
 <div id="content">
 <h1 class="title" onclick="nextSlide()"
- ondblclick="prevSlide()">Slide Presentations in HTML and JavaScript</h1>
-<i>
-<br>
-by Akkana Peck
-<br>
-Last updated January 2016
-</i>
+ ondblclick="prevSlide()">CSS stylesheets</h1>
 
-<br><br>
-Next slide: spacebar, page down, or right arrow.
+Speaking of CSS:
+
+<ul id="points" class="nobullets">
+<li>You don't have to use the crufty <i>slides.css</i> file included here.
+<li>Customize your presentation any way you want!
+<li>You're probably better at CSS than I am anyway.
+</ul>
+
 </div>
 </div>
 
