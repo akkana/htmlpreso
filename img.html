@@ -1,0 +1,54 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script src="navigate.js"></script>
+  <script src="notes.js"></script>
+  <link rel="stylesheet" type="text/css" href="slides.css">
+  <title>HTML Presentations</title>
+  <style type="text/css">
+    td { padding: 0; text-align: center; }
+  </style>
+<script type="text/javascript">
+var imgname;
+
+function getImgName() {
+  var url = document.URL;   // could also use window.location
+  var lastslash = url.lastIndexOf("?");
+  if (lastslash > 0) {
+    imgname = url.substring(lastslash+1, url.length);
+  }
+  if (checkNotes && imgname) {
+    checkNotes(imgname);
+  }
+
+  var img = document.getElementById("fullpage");
+  if (imgname) img.src = imgname;
+  else alert("No imgname!");
+
+  initpage();
+}
+</script>
+</head>
+
+<body onload="getImgName();">
+<span id="navigation">
+  <a href="" accesskey="P" onclick="prevSlide(); return false;">Previous</a> |
+  <a href="" accesskey="B" onclick="prevSlide(); return false;"></a>
+  <a href="" accesskey="N" onclick="nextSlide(); return false;">Next</a>
+</span>
+
+<div id="titlepage">
+<table border=1 width=100% height=100%><tr><td align=center valign=center>
+<img id="fullpage">
+</table>
+
+<script type="text/javascript">
+</script>
+
+</div>
+
+<div id="notes">
+</div>
+
+</body>
+</html>
