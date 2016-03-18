@@ -261,6 +261,14 @@ function initpage() {
   nextdiv.style.position = "absolute";
   body.appendChild(nextdiv);
 
+  // Add a title if there isn't already one, from the first H1:
+  if (!document.title) {
+    headers = document.getElementsByTagName("h1");
+    if (headers && headers[0]) {
+      document.title = headers[0].innerHTML;
+    }
+  }
+
   var i = indexOfPage();
   //window.alert("This is slide " + i);
   if (i >= slides.length - 1) {    // last slide

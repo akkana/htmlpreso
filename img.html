@@ -18,7 +18,13 @@ function getImgName() {
   }
 
   img = document.getElementById("fullpage");
-  if (imgname) img.src = imgname;
+  if (imgname) {
+    img.src = imgname;
+
+    // Also add the image's basename to the title.
+    var base = imgname.substring(imgname.lastIndexOf('/') + 1); 
+    document.title += ": " + base;
+  }
   else alert("No imgname!");
 
   initpage();
