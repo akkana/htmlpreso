@@ -2,20 +2,22 @@
 <head>
   <script src="navigate.js"></script>
   <link rel="stylesheet" type="text/css" href="slides.css">
+  <style type="text/css">
+#navigation { display: inline; }
+  </style>
 </head>
 
-<body onload="initpage();">
+<body onload="initPage();">
 
 <div id="page">    
 <div id="content">
 
-<h1 class="title" onclick="nextSlide()"
- ondblclick="prevSlide()">Navigation Span</h1>
+<h1 class="title">Navigation Span</h1>
 
 <p>
 The <code>#navigation</code> span
-does two things: connects access keys (good for accessibility for
-people viewing your presentation on the web) and gives you an easy
+does two things: it connects access keys (good for accessibility for
+people viewing your presentation on the web) and it gives you an easy
 way to turn on visible navigation (by commenting out the <i>display: none</i>).
 </div>
 

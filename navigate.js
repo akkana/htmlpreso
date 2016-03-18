@@ -15,6 +15,7 @@ var slides = new Array ("index.html",
                          "settingup.html",
                          "eachslide.html",
                          "navspan.html", "navspan2.html", "navspan3.html",
+                         "clicktitle.html",
                          "lists.html",
                          "lists-how.html", "lists-how2.html",
                          "lists-nobullets.html",
@@ -154,7 +155,7 @@ function initPoints(num_vis)
   }
 
   // Do any other page initialization we need:
-  initpage();
+  initPage();
 }
 
 function indexOfPage() {
@@ -254,18 +255,24 @@ function prevSlide() {
   window.location = slides[i-1];
 }
 
-function initpage() {
+function initPage() {
   var body = document.getElementsByTagName("body")[0];
   var nextdiv = document.createElement("div");
   nextdiv.id = "nextdiv";
   nextdiv.style.position = "absolute";
   body.appendChild(nextdiv);
 
-  // Add a title if there isn't already one, from the first H1:
-  if (!document.title) {
-    headers = document.getElementsByTagName("h1");
-    if (headers && headers[0]) {
+  headers = document.getElementsByTagName("h1");
+  if (headers && headers[0]) {
+    // Add a title if there isn't already one, from the first H1:
+    if (!document.title) {
       document.title = headers[0].innerHTML;
+    }
+
+    // Add a handler to <h1 class="title"> so that clicking on the
+    // title will go to the next slide.
+    if (headers[0].getAttribute("class") == "title") {
+      headers[0].setAttribute("onClick", "nextSlide();");
     }
   }
 

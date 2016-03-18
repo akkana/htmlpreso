@@ -4,15 +4,14 @@
   <link rel="stylesheet" type="text/css" href="slides.css">
 </head>
 
-<body onload="initpage();">
+<body onload="initPage();">
 
 <div id="page">    
 <div id="content">
-<h1 class="title" onclick="nextSlide()"
- ondblclick="prevSlide()">Setting Up Lists</h1>
+<h1 class="title">Setting Up Lists</h1>
 
 <p>
-To set up list points, add to the body:
+To set up list points, change the body's <i>onload</i>:
 <pre>
 &lt;body onload="initPoints(1)"&gt;
 </pre>
@@ -23,8 +22,8 @@ Pass in the number of points you want to have initially visible.
 </div>
 
 <div id="notes">
-You can replace the call to initpage() &mdash;
-initPoints() will call initpage() for you.
+You can replace the call to initPage() &mdash;
+initPoints() will call initPage() for you.
 </div>
 
 </body>

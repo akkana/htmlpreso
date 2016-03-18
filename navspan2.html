@@ -2,25 +2,29 @@
 <head>
   <script src="navigate.js"></script>
   <link rel="stylesheet" type="text/css" href="slides.css">
+  <style type="text/css">
+#navigation { display: inline; }
+  </style>
 </head>
 
-<body onload="initpage();">
+<body onload="initPage();">
 
 <div id="page">    
 <div id="content">
 
-<h1 class="title" onclick="nextSlide()"
- ondblclick="prevSlide()">Navigation Span</h1>
+<h1 class="title">Navigation Span</h1>
 
 <p>
-Then add to slides.css:
+It's made invisible in slides.css:
 <pre>
 #navigation { display: none; }
 </pre>
 
 <p>
-That will make it invisible. Change it to <code>display: inline</code>
-to enable it. e.g. to show slides on the web.
+Comment out that line or
+change it to <code>display: inline</code>
+to make it visible (like on this page),
+e.g. to show your slides on the web.
 </div>
 
 </div>

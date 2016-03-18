@@ -3,7 +3,7 @@
  */
 
 var notes = {
-    "pix/foo.jpg" : "notes here",
+    "pix/img-notes.jpg" : "Place note here",
 }
 
 function checkNotes(imgname) {
