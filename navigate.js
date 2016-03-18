@@ -269,6 +269,14 @@ function initpage() {
     }
   }
 
+  // Add the navigation span just inside the body tag.
+  // On firefox, accesskeys use alt-shift.
+  var navspan = document.createElement("span");
+  navspan.setAttribute("id", "navigation");
+  navspan.innerHTML = '<a href="#" accesskey="P" onclick="prevSlide(); return false;">Previous</a> | <a href="#" accesskey="N" onclick="nextSlide(); return false;">Next</a>';
+  // Insert it at the beginning of the body, before the first child node:
+  document.body.insertBefore(navspan, body.childNodes[0]);
+
   var i = indexOfPage();
   //window.alert("This is slide " + i);
   if (i >= slides.length - 1) {    // last slide
