@@ -53,7 +53,7 @@ img.fullpage {
 
 #notes {
   position: absolute; left: 1035px;
-  top: 40px;
+  top: 5px;
   width: 330px; /* Need to set a maximum, and clip if it doesn't fit! */
   font-family: sans-serif;
   font-size: 24px;
