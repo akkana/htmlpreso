@@ -1,32 +1,10 @@
 // JavaScript Slide Presentation software.
-// Copyright 2003-2014 by Akkana Peck.
+// Copyright 2003-2016 by Akkana Peck.
 // This software is licensed under the GNU public license v2 (or later) --
 // Share and enjoy!
 
 // See a presentation on how to use it at
 // http://shallowsky.com/linux/presentations/
-
-//
-// Slide navigation. List your slides here, in order.
-//
-var slides = new Array ("index.html",
-                         "what.html",
-                         "navigation.html",
-                         "settingup.html",
-                         "eachslide.html",
-                         "navspan.html", "navspan2.html", "navspan3.html",
-                         "clicktitle.html",
-                         "lists.html",
-                         "lists-how.html", "lists-how2.html",
-                         "lists-nobullets.html",
-                         "cssclasses.html",
-                         "notes.html",
-                         "img.html?pix/just-image.jpg",
-                         "img.html?pix/img-notes.jpg",
-                         "tips.html",
-                         "download.html",
-                         "conclusion.html"
-);
 
 //
 // Add the event listener.
