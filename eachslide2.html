@@ -12,10 +12,18 @@
 <h1 class="title">Setting Up Each Slide</h1>
 
 <p>
-Edit <b>blank.html</b> and <b>img.html</b> to change the &lt;title&gt;
-to the title of your presentation.
-<p>
-You can use <b>blank.html</b> as a template for each new slide.
+Each slide must contain this in the HTML &lt;head&gt;:
+
+<pre>
+  &lt;script src="slides.js"&gt;&lt;/script&gt;
+  &lt;script src="navigate.js"&gt;&lt;/script&gt;
+</pre>
+
+and this in the &lt;body&gt:
+<pre>
+  &lt;body onload="initPage();"&gt;
+</pre>
+(You'll see one exception later.)
 
 </div>
 </div>

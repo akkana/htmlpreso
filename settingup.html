@@ -3,25 +3,34 @@
   <script src="slides.js"></script>
   <script src="navigate.js"></script>
   <link rel="stylesheet" type="text/css" href="slides.css">
+  <style type="text/css">
+    tr { font-size: .9em; font-style: italic; line-height: 1em; }
+    td { padding: .2em; }
+  </style>
 </head>
 
 <body onload="initPage();">
 
-<div id="page">    
+<div id="page">
 <div id="content">
 <h1 class="title">Setting Up a Presentation</h1>
 
 <p>
-Edit <a href="navigate.js">navigate.js</a>.
-At the beginning you'll see the <i>slides</i> array:
-
-<pre>
-var slides = new Array ( "index.html",
-[ ... ]
-                 "conclusion.html" );
-</pre>
+Copy these starter files into your new presentation directory:
 <p>
-Edit this array to insert the names of your own slides, in order.
+<table>
+
+<tr><td>blank.html
+    <td>Basic slide template
+<tr><td>img.html
+    <td>For image-only slides
+<tr><td>slides.js
+    <td>Your slide list
+<tr><td>slides.css
+    <td>Slide stylesheet
+<tr><td>navigate.js, notes.js
+    <td>The code behind the scenes
+</table>
 
 </div>
 </div>
