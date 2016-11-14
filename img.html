@@ -23,7 +23,7 @@ function getImgName() {
     img.src = imgname;
 
     // Also add the image's basename to the title.
-    var base = imgname.substring(imgname.lastIndexOf('/') + 1); 
+    var base = imgname.substring(imgname.lastIndexOf('/') + 1);
     document.title += ": " + base;
   }
   else alert("No imgname!");
