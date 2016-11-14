@@ -23,7 +23,7 @@ function onKeyPress(e) {
     alert("KeyPress: key = " + e.key + ", keyCode = " + e.keyCode + ", charCode = " + e.charCode);
     return;
 }
-*/ 
+*/
 
 //
 // Keypress navigation
@@ -246,7 +246,7 @@ function blankScreen() {
 
 function tableOfContents() {
   // First make a list of all our slides:
-  var text = "<h2>Table of Contents</h2>\n<small>\n";
+  var text = '<div id="contentspage">\n<div id="content">\n<h2>Table of Contents</h2>\n<small>';
   var i;
   for (i=0; i<slides.length; ++i)
     text += '<a href="' + slides[i] + '">' + slides[i] + '</a><br>\n'

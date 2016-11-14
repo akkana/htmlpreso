@@ -51,6 +51,10 @@ img.fullpage {
   z-index: 1;
 }
 
+table.nopadding td, tr {
+  padding: 0;
+}
+
 #notes {
   position: absolute; left: 1035px;
   top: 5px;
@@ -196,6 +200,16 @@ pre b { color: #ff3; font-weight: bold; font-size: 1.1em; }
 blockquote { font-size: 1.2em; }
 
 strong { font-weight: bold; text-decoration: underline; }
+
+#contentspage {
+  width: 1024px;
+  height: 762px;   /* !768 because of firefox residual top bar */
+  position: absolute; left: 0px; top: 0px;
+  outline: #ddf solid thin;
+  overflow: scroll !important;
+  font-size: 30px;
+  line-height: 1.2em;
+}
 
 .popup {
   background: #644;
