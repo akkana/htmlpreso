@@ -11,30 +11,28 @@
 // This has to be on keydown or keyup because webkit doesn't
 // generate keypress events for nonprintable keys.
 if (document.addEventListener) {	// DOM way
+  document.addEventListener("keydown", onKeyDown, false);
+
   //document.addEventListener("keypress", onKeyPress, false);
-  //document.addEventListener("keyup", onKeyPress, false);
-  document.addEventListener("keydown", onKeyPress, false);
 }
 else if (document.all)			// IE way
-  document.attachEvent("onkeypress", onKeyPress);
+  document.attachEvent("onkeydown", onKeyDown);
 
 /*
-function onKeyUp(e)
-{
-  alert("key up, char code " + e.charCode + ", key code " + e.keyCode );
+function onKeyPress(e) {
+    alert("KeyPress: key = " + e.key + ", keyCode = " + e.keyCode + ", charCode = " + e.charCode);
+    return;
 }
-*/
+*/ 
 
 //
 // Keypress navigation
-function onKeyPress(e)
+function onKeyDown(e)
 {
   // IE doesn't see the event argument passed in, so get it this way:
   if (window.event) e = window.event;
 
-  //alert("key press, char code " + e.charCode + ", key code " + e.keyCode
-  //      + ", " + e.ctrlKey + ", " + e.altKey + ", " + e.metaKey );
-  /* For debugging, turn this on:
+  /* Debugging stuff:
   if (typeof console != "undefined")
     console.log("key press, char code " + e.charCode + ", key code " + e.keyCode
                 + ", " + e.ctrlKey + ", " + e.altKey + ", " + e.metaKey );
@@ -44,64 +42,97 @@ function onKeyPress(e)
   if (e.ctrlKey || e.altKey || e.metaKey) {
     return;
   }
+  // Don't do anything for Shift, Ctrl, Alt or Windows on their own:
+  switch (e.keyCode) {
+    case 16: case 17: case 18: case 91:
+      return;
+  }
+
+  /*
+  alert("key down: char code " + e.charCode + ", key code " + e.keyCode
+        + ", " + e.shiftKey + ", " + e.ctrlKey + ", "
+        + e.altKey + ", " + e.metaKey );
+   */
 
   // We only use shift for one thing: the table of contents.
+  // But some wireless presenters can send shift-F5,
+  // which also calls up some performance window thing in firefox.
   if (e.shiftKey) {
+    // alert("shift key! Plus " + e.keyCode);
     switch (e.keyCode) {
-      case 33:    // e.DOM_VK_PAGE_UP:
-      case 33:    // e.DOM_VK_PAGE_UP:
+      case 33:    // Page Up
         tableOfContents();
         e.preventDefault();
+        return false;
+
+      case 116:   // F5, sent by some presenters, in Webkit
+        // alert("Shift+F5: Supposedly called preventDefault()");
+        tableOfContents();
+        e.preventDefault();
+        return false;
     }
     return;
   }
 
-  // Mozilla uses charCode for printable characters, keyCode for unprintables:
+  // Mozilla uses charCode for printable characters, keyCode for unprintables.
+  // Pull out the charCodes first:
   if (e.charCode) {
     switch (e.charCode) {
       case 32:
         nextSlide();
         e.preventDefault();
-        return;
-      // The Logitech Presenter sends a period from the "blank screen" btn
+        return false;
+      // The Logitech Presenter sends a period from the "blank screen" btn.
+      // But most presenters seem to send b.
       case 46:
         blankScreen();
         e.preventDefault();
-        return;
+        return false;
     }
   }
 
-  // Use numeric values rather than DOM_VK_* so that non-mozilla browsers
-  // might work.
+  // Now keyCodes. There don't seem to be any cross-browser symbols for these.
   switch (e.keyCode) {
-    case 32:    // e.DOM_VK_SPACE:
-    case 34:    // e.DOM_VK_PAGE_DOWN:
-    case 39:    // e.DOM_VK_RIGHT:
+    case 32:    // Space
+    case 34:    // Page Down
+    case 40:    // Arrow Down
+    case 39:    // Arrow Right
       nextSlide();
       e.preventDefault();
-      return;
-    case 8:     // e.DOM_VK_BACK_SPACE:
-    case 33:    // e.DOM_VK_PAGE_UP:
-    case 37:    // e.DOM_VK_LEFT:
+      return false;
+
+    case 8:     // Backspace
+    case 33:    // Page Up
+    case 38:    // Arrow Up
+    case 37:    // Arrow Left
       prevSlide();
       e.preventDefault();
-      return;
-    case 36:    // e.DOM_VK_HOME:
-    //case 38:    // e.DOM_VK_UP:
+      return false;
+
+    case 36:    // Home
       firstSlide();
       e.preventDefault();
-      return;
-    case 35:    // e.DOM_VK_END:
+      return false;
+
+    case 35:    // End
       lastSlide();
       e.preventDefault();
-      return;
-    // The Logitech Presenter's F5/ESC button sometimes sends ESC,
-    // sometimes F5. I can't figure out the rule, so treat them the same:
-    case 27:     // e.DOM_VK_ESC:
-    case 116:    // e.DOM_VK_F5:
-      firstSlide();
+      return false;
+
+      case 66:    // b
+        blankScreen();
+        e.preventDefault();
+        return false;
+
+    // Many presenters toggle between ESC and Shift-F5.
+    // I think on PowerPoint it's supposed to toggle slideshow mode.
+    // It's not clear if we need to watch for unshifted F5 like this.
+    // Here, we could show a table of contents.
+    case 27:     // Escape
+    case 116:    // F5
+      tableOfContents();
       e.preventDefault();
-      return;
+      return false;
   }
 }
 
