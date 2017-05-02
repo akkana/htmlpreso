@@ -125,6 +125,12 @@ h3 {
   line-height: 1.3em;
 }
 
+#imgtitle {
+  position: absolute; left: 100; top: 10;
+  color: brown;
+  text-shadow: 3px 3px 3px #000000;
+}
+
 /* A style to put on #page when it has a background image;
  * this is in addition to style=url(pix/something.jpg).
  */
@@ -151,6 +157,14 @@ em { font-style: italic; font-weight: bold; }
 #content ul.nobullets {
   list-style-type: none;
   list-style-image: none;
+}
+
+.note {
+  font-size: .8em;
+  font-style: italic;
+  color: #f0a;
+  /* This doesn't work and I hate CSS: */
+  margin-bottom: 30px !important;
 }
 
 li { margin-top: .8em; margin-bottom: .4em; padding-left: .4em;
