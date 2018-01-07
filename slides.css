@@ -1,5 +1,5 @@
 /* slide stylesheet for 1024x768 projector, 1366x768 laptop:
- * notes on rightmost 342 px 
+ * notes on rightmost 342 px.
  */
 
 #navigation {
@@ -21,8 +21,13 @@ body {
   margin-left: 0em;
   font-size: 44px;
   line-height: 1.6em;
-  /*padding-bottom: 0;
-  /*margin: 0px 0px 0px 0px;*/
+
+  width: 1366px;
+  height: 768px;
+  position: absolute; left: 0px; top: 0px;
+  border: 0; margin: 0; padding: 0;
+  overflow: hidden;
+  outline: red solid thin;
 
   /* If you get stuck on an 800x600 projector, use these:
    * unfortunately it doesn't work on all browsers.
@@ -37,9 +42,10 @@ body {
 
 #page {
   width: 1024px;
-  height: 762px;   /* !768 because of firefox residual top bar */
+  height: 768px;   /* !768 because of firefox residual top bar */
   position: absolute; left: 0px; top: 0px;
-  outline: #ddf solid thin;
+  border: 0; margin: 0; padding: 0;
+  outline: #00a solid thin;
   overflow: hidden;
   /* background: url(pix/something.png) no-repeat bottom right; */
 }
@@ -111,8 +117,8 @@ h3 {
 }
 
 .bigtitle {
-  font-size: 2.5em;
-  margin-top: 1.7em;
+  font-size: 2.1em;
+  margin-top: 1.5em;
   margin-left: 1em;
   line-height: 1.3em;
   /*text-align: center;*/
@@ -249,4 +255,9 @@ strong { font-weight: bold; text-decoration: underline; }
 
 .indented {
   margin-left: 5em;
+}
+
+@media print {
+  body { width: 1024px; }
+  #notes, #nextdiv { display: none; }
 }
