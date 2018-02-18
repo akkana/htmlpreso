@@ -229,7 +229,8 @@ function blankScreen() {
     }
   }
   else {
-    var body = document.getElementsByTagName("body")[0];
+    //var body = document.getElementsByTagName("body")[0];
+    var body = document.getElementById("page");
     allblack = document.createElement("div");
     allblack.id = "allblack";
     allblack.style.position = "absolute";
@@ -311,4 +312,12 @@ function initPage() {
     nextdiv.innerHTML = "Next: " + nextname.substring(slash);
   else
     nextdiv.innerHTML = "Next: " + nextname.substring(slash, dot);
+}
+
+function checkCredits(imgname) {
+  var credit = credits[imgname];
+  if (credit) {
+    var creditArea = document.getElementById("imgcredit");
+    creditArea.innerHTML = credit;
+  }
 }
