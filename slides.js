@@ -4,6 +4,7 @@
 //
 var slides = new Array ("index.html",
                         "what.html",
+                        "html.html",
                         "navigation.html",
                         "settingup.html", "settingup2.html",
                         "eachslide.html", "eachslide2.html",
