@@ -17,6 +17,7 @@ var slides = new Array ("index.html",
                         "img.html?pix/just-image.jpg",
                         "img.html?pix/just-image-title.jpg&title=Image+title",
                         "img.html?pix/img-notes.jpg",
+                        "ignite.html",
                         "tips.html",
                         "download.html",
                         "conclusion.html"

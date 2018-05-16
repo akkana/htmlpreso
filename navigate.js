@@ -1,3 +1,5 @@
+// -*- mode: js; js-indent-level: 2; -*-
+
 // JavaScript Slide Presentation software.
 // Copyright 2003-2016 by Akkana Peck.
 // This software is licensed under the GNU public license v2 (or later) --
@@ -10,12 +12,12 @@
 // Add the event listener.
 // This has to be on keydown or keyup because webkit doesn't
 // generate keypress events for nonprintable keys.
-if (document.addEventListener) {	// DOM way
+if (document.addEventListener) {        // DOM way
   document.addEventListener("keydown", onKeyDown, false);
 
   //document.addEventListener("keypress", onKeyPress, false);
 }
-else if (document.all)			// IE way
+else if (document.all)                  // IE way
   document.attachEvent("onkeydown", onKeyDown);
 
 /*
@@ -298,20 +300,25 @@ function initPage() {
   //window.alert("This is slide " + i);
   if (i >= slides.length - 1) {    // last slide
     nextdiv.innerHTML = "The end";
-    return;
   }
-  var nextname = slides[i+1];
-  //nextname = new String(slides[i+1]);
-  var slash = nextname.lastIndexOf('/');
-  if (slash < 0)
-    slash = 0;
-  else
-    slash += 1;
-  var dot = nextname.lastIndexOf('.');
-  if (dot < 0)
-    nextdiv.innerHTML = "Next: " + nextname.substring(slash);
-  else
-    nextdiv.innerHTML = "Next: " + nextname.substring(slash, dot);
+  else {
+    var nextname = slides[i+1];
+    //nextname = new String(slides[i+1]);
+    var slash = nextname.lastIndexOf('/');
+    if (slash < 0)
+      slash = 0;
+    else
+      slash += 1;
+    var dot = nextname.lastIndexOf('.');
+    if (dot < 0)
+      nextdiv.innerHTML = "Next: " + nextname.substring(slash);
+    else
+      nextdiv.innerHTML = "Next: " + nextname.substring(slash, dot);
+  }
+
+  // For Ignite or similar auto-advancing talks, uncomment the next line
+  // and pass the number of seconds per slide (15 for Ignite):
+  //initAutoAdvance(15);
 }
 
 function checkCredits(imgname) {
@@ -319,5 +326,151 @@ function checkCredits(imgname) {
   if (credit) {
     var creditArea = document.getElementById("imgcredit");
     creditArea.innerHTML = credit;
+  }
+}
+
+//
+// Ignite/autoadvance code:
+//
+
+/*
+// window.setTimeout()
+
+function initAutoAdvance(secs) {
+
+  var autoAdvancer = {
+    secPerSlide: secs,
+
+    countdown: true,
+    curSlide: indexOfPage(),
+    countdownSecs: (slides.length - this.curSlide) * this.secPerSlide,
+
+    updateCountdownText : function () {
+      var mins = Math.floor(this.countdownSecs / 60)
+      var secs = this.countdownSecs % 60
+      if (secs < 10) secs = "0" + secs;
+      this.countdown_txt.nodeValue = "" + mins + ":" + secs;
+    },
+
+    updateTime : function () {
+      this.countdownSecs -= 1;
+      self.updateCountdownText();
+      if (this.countdownSecs > 0)
+        setTimeout("updateTime();", 1000);
+    },
+
+    // We're currently on slide # whichslide.
+    // Next will be whichslide+1.
+
+    setCountdown : function () {
+      var self = this;
+
+      if (this.countdown) {
+        //setTimeout("updateTime();", 1000);
+        this.timer = setTimeout(function(){
+          self.updateTime();
+        }, 0);
+      }
+
+      if ((this.curSlide+1) < slides.length) {
+        setTimeout("nextSlide();", this.secPerSlide * 1000);
+      }
+      //else alert("Last slide: " + (curSlide+1) + " of " + slides.length);
+    },
+
+    createPageElements : function () {
+      // Now add the slide number
+      var slideno_span = document.createElement("span");
+      slideno_span.setAttribute("id", "slideno");
+      document.body.appendChild(slideno_span);
+      var slideno_txt = document.createTextNode("[Slide " + (this.curSlide+1)
+                                          + "/" + slides.length + "]");
+      slideno_span.appendChild(slideno_txt);
+
+      // and the countdown
+      if (this.countdown) {
+        var countdown_span = document.createElement("span");
+        countdown_span.setAttribute("id", "countdown");
+        document.body.appendChild(countdown_span);
+        this.countdown_txt = document.createTextNode("");
+        countdown_span.appendChild(this.countdown_txt);
+        this.updateCountdownText();
+      }
+    } // end definition of var autoAdvancer
+  };
+
+  autoAdvancer.createPageElements();
+  autoAdvancer.setCountdown();
+
+  return autoAdvancer;
+}
+*/
+
+// It would be lovely to define an object and not have to have
+// all these global variables, but Javascript is such a total
+// piece of crap in how it handles "this" with timeouts
+// that I gave up trying to make it work.
+// And, of course, we can't load another file conditionally,
+// because Javascript has no "include" or "require" or "load".
+// So make everything global instead, because Javascript.
+
+var countdown;
+var countdownSecs;
+var countdown_txt;
+var curSlide;
+var secPerSlide;
+var slideno_span;
+var slideno_txt;
+
+function updateCountdownText() {
+  var mins = Math.floor(countdownSecs / 60)
+  var secs = countdownSecs % 60
+  if (secs < 10) secs = "0" + secs;
+  countdown_txt.nodeValue = "" + mins + ":" + secs;
+}
+
+function updateTime() {
+  countdownSecs -= 1;
+  updateCountdownText();
+  if (countdownSecs > 0)
+    setTimeout("updateTime();", 1000);
+}
+
+function initAutoAdvance(secs) {
+  secPerSlide = secs;
+  countdown = true
+  curSlide= indexOfPage();
+  countdownSecs = (slides.length - curSlide) * secPerSlide;
+
+  // We're currently on slide # whichslide.
+  // Next will be whichslide+1.
+
+  if (countdown) {
+    setTimeout("updateTime();", 1000);
+  }
+
+  if ((curSlide+1) < slides.length) {
+    setTimeout("nextSlide();", secPerSlide * 1000);
+  }
+  //else alert("Last slide: " + (curSlide+1) + " of " + slides.length);
+
+  // Functions defined. Now for the code.
+
+  // Now add the slide number
+  slideno_span = document.createElement("span");
+  slideno_span.setAttribute("id", "slideno");
+  document.body.appendChild(slideno_span);
+  slideno_txt = document.createTextNode("[Slide " + (curSlide+1)
+                                          + "/" + slides.length + "]");
+  slideno_span.appendChild(slideno_txt);
+
+  // and the countdown
+  if (countdown) {
+    var countdown_span = document.createElement("span");
+    countdown_span.setAttribute("id", "countdown");
+    document.body.appendChild(countdown_span);
+    countdown_txt = document.createTextNode("");
+    countdown_span.appendChild(countdown_txt);
+    updateCountdownText();
   }
 }

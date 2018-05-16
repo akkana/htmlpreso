@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <script src="slides.js"></script>
+  <script src="navigate.js"></script>
+  <link rel="stylesheet" type="text/css" href="slides.css">
+</head>
+
+<body onload="initPage();">
+
+<div id="page">
+<div id="content">
+<h1 class="title">Auto-Advancing Slides</h1>
+
+<p>
+To auto-advance the slides (e.g. for Ignite),
+edit <b>navigation.js</b>,
+search for <i>Ignite</i>,
+and uncomment <i>initAutoAdvance()</i>:
+
+<pre>
+  // For Ignite or similar auto-advancing talks,
+  // uncomment the next line and pass the number of
+  // seconds per slide (15 for Ignite):
+  initAutoAdvance(15);
+</pre>
+
+</div>
+</div>
+
+</body>
+</html>

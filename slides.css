@@ -19,7 +19,7 @@ body {
   background: white url(pix/vfade.jpg) repeat-x;
   margin-top: 0em;
   margin-left: 0em;
-  font-size: 44px;
+  font-size: 40px;
   line-height: 1.6em;
 
   width: 1366px;
@@ -237,7 +237,6 @@ strong { font-weight: bold; text-decoration: underline; }
   font-size: .6em;
   border: 2px outset;
   position: absolute;
-  -moz-box-shadow: 8px 8px 15px #333;
   -webkit-box-shadow: 8px 8px 15px #333;
   box-shadow: 8px 8px 15px #333;
 }
@@ -247,7 +246,6 @@ strong { font-weight: bold; text-decoration: underline; }
   color: white;
   border: 2px outset;
   position: absolute !important; right: 1em !important; bottom: 1em !important;
-  -moz-box-shadow: 8px 8px 15px #333;
   -webkit-box-shadow: 8px 8px 15px #333;
   box-shadow: 8px 8px 15px #333;
   z-index: 99;
@@ -260,4 +258,14 @@ strong { font-weight: bold; text-decoration: underline; }
 @media print {
   body { width: 1024px; }
   #notes, #nextdiv { display: none; }
+}
+
+/* Slide info and countdown for Ignite/autoadvance: */
+#slideno {
+  position: absolute !important; right: 2px !important; top: .5em !important;
+  font-size: 35px;
+}
+#countdown {
+  position: absolute !important; right: 2px !important; top: 1.5em !important;
+  font-size: 35px;
 }
