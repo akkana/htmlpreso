@@ -44,17 +44,15 @@ function onKeyDown(e)
   if (e.ctrlKey || e.altKey || e.metaKey) {
     return;
   }
-  // Don't do anything for Shift, Ctrl, Alt or Windows on their own:
+  // Don't do anything for Shift, Ctrl, Alt or W/Meta on their own:
   switch (e.keyCode) {
     case 16: case 17: case 18: case 91:
       return;
   }
 
-  /*
-  alert("key down: char code " + e.charCode + ", key code " + e.keyCode
-        + ", " + e.shiftKey + ", " + e.ctrlKey + ", "
-        + e.altKey + ", " + e.metaKey );
-   */
+  console.log("key down: char code " + e.charCode + ", key code " + e.keyCode
+              + ", " + e.shiftKey + ", " + e.ctrlKey + ", "
+              + e.altKey + ", " + e.metaKey );
 
   // We only use shift for one thing: the table of contents.
   // But some wireless presenters can send shift-F5,
@@ -122,6 +120,7 @@ function onKeyDown(e)
       return false;
 
       case 66:    // b
+      case 190:   // firefox quantum now sends this for .
         blankScreen();
         e.preventDefault();
         return false;
