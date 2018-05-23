@@ -50,9 +50,11 @@ function onKeyDown(e)
       return;
   }
 
+  /*
   console.log("key down: char code " + e.charCode + ", key code " + e.keyCode
               + ", " + e.shiftKey + ", " + e.ctrlKey + ", "
               + e.altKey + ", " + e.metaKey );
+   */
 
   // We only use shift for one thing: the table of contents.
   // But some wireless presenters can send shift-F5,
