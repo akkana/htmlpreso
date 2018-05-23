@@ -2,16 +2,20 @@ This is a template to help you write presentation slides in HTML,
 so they can be displayed on the web as well as a live projector.
 It uses Javascript to advance to the next slide.
 
-The repo is a presentation in itself: the first slide is index.html .
+The repository is a self-documenting presentation: after you check
+it out, load index.html in a browser (with javascript enabled)
+and run through the slides.
 
 You can use any browser to present the slides (F11 in Firefox gives
-full-screen mode), but I wrote a minimal presentation script that
-uses python-webkit:
+full-screen mode), but I use a minimal presentation script I wrote
+that uses python and webkit:
 https://github.com/akkana/scripts/blob/master/preso
 
 If you need to make a PDF version of the slides, perhaps because
 a conference wants a downloadable version and can't understand a
-tarball or zip file, use qhtmlprint:
+tarball or zip file, you can try qhtmlprint:
 https://github.com/akkana/scripts/blob/master/qhtmlprint
+though it's somewhat brittle (PDF export/print from Python web
+libraries isn't very well supported and doesn't always work.
 Of course, PDF will not preserve effects like bullets that appear
 one at a time.
