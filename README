@@ -8,14 +8,21 @@ and run through the slides.
 
 You can use any browser to present the slides (F11 in Firefox gives
 full-screen mode), but I use a minimal presentation script I wrote
-that uses python and webkit:
-https://github.com/akkana/scripts/blob/master/preso
+that uses python and webkit, in two versions:
 
-If you need to make a PDF version of the slides, perhaps because
-a conference wants a downloadable version and can't understand a
+https://github.com/akkana/scripts/blob/master/qpreso
+https://github.com/akkana/scripts/blob/master/gpreso
+
+gpreso is for older Linux machines, where python-webkit-gtk works.
+But that library has been orphaned, and on newer Linux distros you need
+qpreso, which uses QtWebEngine.
+I don't know which one works better on Mac or Windows (let me know).
+
+If you need to make a PDF version of your slides, for printing or
+because a conference wants a downloadable version and doesn't grok a
 tarball or zip file, you can try qhtmlprint:
 https://github.com/akkana/scripts/blob/master/qhtmlprint
-though it's somewhat brittle (PDF export/print from Python web
+though it's somewhat brittle -- PDF export/print from Python web
 libraries isn't very well supported and doesn't always work.
-Of course, PDF will not preserve effects like bullets that appear
-one at a time.
+Of course, PDF will not preserve effects like one-at-a-time bullets
+or auto-advance.
