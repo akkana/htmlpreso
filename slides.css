@@ -52,13 +52,23 @@ body {
 
 /*#page > img { margin: 60px 40px 30px 40px; } */
 
-img.fullpage {
-  position: absolute; margin: 0; padding: 0;
-  z-index: 1;
+/* Image on pages like img.html where it's the only thing: */
+img#fullpage {
+  /* position: absolute; */
+  margin: 0; padding: 0; border: 0;
+  z-index: -1;
 }
 
-table.nopadding td, tr {
-  padding: 0;
+/* A similar class of absolute images, for use on other pages */
+img.absolute {
+  position: absolute;
+  margin: 0; padding: 0;
+  z-index: -1;
+}
+
+/* The table used on img.html */
+table.nopadding tbody, table.nopadding tr, table.nopadding td {
+  padding: 0; margin: 0; border: 0;
 }
 
 #notes {

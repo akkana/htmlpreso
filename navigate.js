@@ -1,7 +1,7 @@
-// -*- mode: js; js-indent-level: 2; -*-
+/* -*- mode: javascript; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 
 // JavaScript Slide Presentation software.
-// Copyright 2003-2016 by Akkana Peck.
+// Copyright 2003-2018 by Akkana Peck.
 // This software is licensed under the GNU public license v2 (or later) --
 // Share and enjoy!
 
@@ -22,7 +22,7 @@ else if (document.all)                  // IE way
 
 /*
 function onKeyPress(e) {
-    alert("KeyPress: key = " + e.key + ", keyCode = " + e.keyCode + ", charCode = " + e.charCode);
+    console.log("KeyPress: key = " + e.key + ", keyCode = " + e.keyCode + ", charCode = " + e.charCode);
     return;
 }
 */
@@ -268,6 +268,16 @@ function prevSlide() {
   window.location = slides[i-1];
 }
 
+//
+// Parse a single named parameter from the page URL
+//
+function getURLParameter(name) {
+    return decodeURIComponent(
+        (new RegExp('[?|&]' + name + '='
+                    + '([^&;]+?)(&|#|;|$)').exec(location.search)
+         || [null, ''])[1].replace(/\+/g, '%20')) || null;
+}
+
 function initPage() {
   var body = document.getElementsByTagName("body")[0];
   var nextdiv = document.createElement("div");
@@ -297,10 +307,18 @@ function initPage() {
   // Insert it at the beginning of the body, before the first child node:
   document.body.insertBefore(navspan, body.childNodes[0]);
 
+  // Add a note if there's one specified in the URL.
+  note = getURLParameter("note");
+  if (note) {
+    var noteArea = document.getElementById("notes");
+    noteArea.innerHTML = note;
+  }
+
   var i = indexOfPage();
   //window.alert("This is slide " + i);
   if (i >= slides.length - 1) {    // last slide
     nextdiv.innerHTML = "The end";
+    return;
   }
   else {
     var nextname = slides[i+1];
