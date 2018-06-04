@@ -47,8 +47,13 @@ function getImgName() {
     // Also add the image's basename to the title,
     // if there's no title specified.
     if (!titlestr) {
-      titlestr = document.title + ": "
-        + imgname.substring(imgname.lastIndexOf('/') + 1);
+      slashindex = imgname.lastIndexOf('/');
+      ampindex = imgname.indexOf('&');
+      if (ampindex)
+        cleantitle = imgname.substring(slashindex + 1, ampindex);
+      else
+        cleantitle = imgname.substring(slashindex + 1);
+      titlestr = document.title + ": " + cleantitle;
     }
     document.title = titlestr;
   }
