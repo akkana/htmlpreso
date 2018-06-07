@@ -8,6 +8,8 @@
 // See a presentation on how to use it at
 // http://shallowsky.com/linux/presentations/
 
+var curSlide = indexOfPage();
+
 //
 // Add the event listener.
 // This has to be on keydown or keyup because webkit doesn't
@@ -96,6 +98,13 @@ function onKeyDown(e)
   // Now keyCodes. There don't seem to be any cross-browser symbols for these.
   switch (e.keyCode) {
     case 32:    // Space
+      // In auto-advance mode on the first slide, spacebar starts the countdown.
+      if (countdownSecs > 0 && curSlide == 0 && !countdown) {
+        countdown = true;
+        startCountdown(curSlide);
+        return;
+      }
+      // else fall through to call nextSlide():
     case 34:    // Page Down
     case 40:    // Arrow Down
     case 39:    // Arrow Right
@@ -136,6 +145,12 @@ function onKeyDown(e)
       tableOfContents();
       e.preventDefault();
       return false;
+
+    case 83:      // s
+    case 46:      // Delete
+      countdown = !countdown;
+      if (countdown)
+        startCountdown(null);
   }
 }
 
@@ -202,13 +217,24 @@ function nextSlide() {
     return;
   }
 
-  // No next point -- go to the next slide instead.
-  var i = indexOfPage();
-  if (i >= slides.length - 1) {    // last slide
+  // No next point.
+  /*
+  // If we're in auto-advance mode and still on the first slide,
+  // start the countdown.
+  if (countdownSecs > 0 && curSlide == 0 && !countdown) {
+    countdown = true;
+    startCountdown(curSlide);
+    return;
+  }
+  */
+
+  // Otherwise, go to the next slide.
+
+  if (curSlide >= slides.length - 1) {    // last slide
     //window.alert("That's the last slide");
     return;
   }
-  window.location = slides[i+1];
+  window.location = slides[curSlide+1];
 }
 
 function firstSlide() {
@@ -260,12 +286,11 @@ function tableOfContents() {
 }
 
 function prevSlide() {
-  var i = indexOfPage();
-  if (i <= 0) {    // last slide
+  if (curSlide <= 0) {    // last slide
     //window.alert("Already on the first slide");
     return;
   }
-  window.location = slides[i-1];
+  window.location = slides[curSlide-1];
 }
 
 //
@@ -314,15 +339,12 @@ function initPage() {
     noteArea.innerHTML = note;
   }
 
-  var i = indexOfPage();
   //window.alert("This is slide " + i);
-  if (i >= slides.length - 1) {    // last slide
+  if (curSlide >= slides.length - 1) {    // last slide
     nextdiv.innerHTML = "The end";
-    return;
   }
   else {
-    var nextname = slides[i+1];
-    //nextname = new String(slides[i+1]);
+    var nextname = slides[curSlide+1];
     var slash = nextname.lastIndexOf('/');
     if (slash < 0)
       slash = 0;
@@ -337,7 +359,7 @@ function initPage() {
 
   // For Ignite or similar auto-advancing talks, uncomment the next line
   // and pass the number of seconds per slide (15 for Ignite):
-  //initAutoAdvance(15);
+  initAutoAdvance(15);
 }
 
 function checkCredits(imgname) {
@@ -360,63 +382,66 @@ function checkCredits(imgname) {
 // because Javascript has no "include" or "require" or "load".
 // So make everything global instead, because Javascript.
 
-var countdown;
+var countdown = false;
 var countdownSecs;
 var countdown_txt;
-var curSlide;
 var secPerSlide;
 var slideno_span;
 var slideno_txt;
 
 function updateCountdownText() {
-  var mins = Math.floor(countdownSecs / 60)
-  var secs = countdownSecs % 60
-  if (secs < 10) secs = "0" + secs;
-  countdown_txt.nodeValue = "" + mins + ":" + secs;
+  countdown_txt.nodeValue = "" + countdownSecs;
 }
 
 function updateTime() {
   countdownSecs -= 1;
   updateCountdownText();
-  if (countdownSecs > 0)
+
+  if (countdownSecs <= 0) {
+    if (curSlide+1 < slides.length)
+      nextSlide();
+    return;
+  }
+
+  if (countdown)
     setTimeout("updateTime();", 1000);
+}
+
+function startCountdown(curSlide) {
+  //console.log("startCountdown");
+
+  countdown = true;
+
+  setTimeout("updateTime();", 1000);
 }
 
 function initAutoAdvance(secs) {
   secPerSlide = secs;
-  countdown = true
-  curSlide= indexOfPage();
-  countdownSecs = (slides.length - curSlide) * secPerSlide;
+  //console.log("initAutoAdvance, curSlide=" + curSlide);
+  countdownSecs = secPerSlide;
 
-  // We're currently on slide # whichslide.
-  // Next will be whichslide+1.
+  // We're currently on slide # curSlide.
+  // If that's 0 (the first slide), don't start advancing yet;
+  // wait for a nextSlide event.
 
-  if (countdown) {
-    setTimeout("updateTime();", 1000);
-  }
-
-  if ((curSlide+1) < slides.length) {
-    setTimeout("nextSlide();", secPerSlide * 1000);
-  }
-  //else alert("Last slide: " + (curSlide+1) + " of " + slides.length);
-
-  // Functions defined. Now for the code.
+  if (curSlide == 0)
+    countdown = false;
+  else
+    startCountdown(curSlide);
 
   // Now add the slide number
   slideno_span = document.createElement("span");
   slideno_span.setAttribute("id", "slideno");
   document.body.appendChild(slideno_span);
   slideno_txt = document.createTextNode("[Slide " + (curSlide+1)
-                                          + "/" + slides.length + "]");
+                                        + "/" + slides.length + "]");
   slideno_span.appendChild(slideno_txt);
 
   // and the countdown
-  if (countdown) {
-    var countdown_span = document.createElement("span");
-    countdown_span.setAttribute("id", "countdown");
-    document.body.appendChild(countdown_span);
-    countdown_txt = document.createTextNode("");
-    countdown_span.appendChild(countdown_txt);
-    updateCountdownText();
-  }
+  var countdown_span = document.createElement("span");
+  countdown_span.setAttribute("id", "countdown");
+  document.body.appendChild(countdown_span);
+  countdown_txt = document.createTextNode("");
+  countdown_span.appendChild(countdown_txt);
+  updateCountdownText();
 }
