@@ -52,17 +52,17 @@ function onKeyDown(e)
       return;
   }
 
-  /*
   console.log("key down: char code " + e.charCode + ", key code " + e.keyCode
               + ", " + e.shiftKey + ", " + e.ctrlKey + ", "
               + e.altKey + ", " + e.metaKey );
+  /*
    */
 
   // We only use shift for one thing: the table of contents.
   // But some wireless presenters can send shift-F5,
   // which also calls up some performance window thing in firefox.
   if (e.shiftKey) {
-    // alert("shift key! Plus " + e.keyCode);
+    //alert("shift key! keycode " + e.keyCode + ", charcode " + e.charCode);
     switch (e.keyCode) {
       case 33:    // Page Up
         tableOfContents();
@@ -74,7 +74,13 @@ function onKeyDown(e)
         tableOfContents();
         e.preventDefault();
         return false;
+
+      case 68:    // shift-D, to initiate drawing
+        initCanvas();
+        e.preventDefault();
+        return false;
     }
+
     return;
   }
 
@@ -96,6 +102,7 @@ function onKeyDown(e)
   }
 
   // Now keyCodes. There don't seem to be any cross-browser symbols for these.
+  console.log("countdownSecs: ", countdownSecs);
   switch (e.keyCode) {
     case 32:    // Space
       // In auto-advance mode on the first slide, spacebar starts the countdown.
@@ -359,7 +366,7 @@ function initPage() {
 
   // For Ignite or similar auto-advancing talks, uncomment the next line
   // and pass the number of seconds per slide (15 for Ignite):
-  initAutoAdvance(15);
+  //initAutoAdvance(15);
 }
 
 function checkCredits(imgname) {
@@ -370,8 +377,8 @@ function checkCredits(imgname) {
   }
 }
 
-//
-// Ignite/autoadvance code:
+////////////////////////////////////////////////////////////////
+// Optional Ignite/autoadvance code:
 //
 
 // It would be lovely to define an object and not have to have
@@ -383,7 +390,7 @@ function checkCredits(imgname) {
 // So make everything global instead, because Javascript.
 
 var countdown = false;
-var countdownSecs;
+var countdownSecs = 0;
 var countdown_txt;
 var secPerSlide;
 var slideno_span;
@@ -445,3 +452,164 @@ function initAutoAdvance(secs) {
   countdown_span.appendChild(countdown_txt);
   updateCountdownText();
 }
+
+////////////////////////////////////////////////////////////////
+// Optional drawing code, to allow drawing on slides:
+//
+// https://codepen.io/medo001/pen/FIbza
+
+var canvas, ctx, flag = false,
+    prevX = 0,
+    currX = 0,
+    prevY = 0,
+    currY = 0,
+    dot_flag = false;
+
+var x = "black";
+
+var linewidth = 4;
+
+function createCanvas()
+{
+    var content = document.getElementById('content');
+
+    var canvas = document.createElement("canvas");
+    canvas.id = "can";
+    //canvas.style.position = "absolute";
+    canvas.width = 1024;
+    canvas.height = 768;
+    canvas.style.position = "absolute";
+    canvas.style.top = "0px";
+    canvas.style.left = "0px";
+    canvas.style.left = "0px";
+    canvas.style.border = "2px solid";
+    canvas.style.zindex = 100;
+    content.appendChild(canvas);
+
+    var colors = new Array("black", "red", "green", "yellow", "blue", "orange");
+    var startpos = 920;   // pixels from the left edge
+    var top = 0;          // pixels from the top
+    var ncol = 3;         // number of colums of color swatches
+    var swatchsize = 15;  // pixels square
+    for (i=0; i < colors.length; ++i) {
+        swatch = document.createElement("div");
+        swatch.id = colors[i];
+        swatch.style.background = colors[i];
+        swatch.classname = "swatch";
+        swatch.style.position = "absolute";
+        if (i % ncol == 0)
+            top += swatchsize + 5;
+        swatch.style.left = startpos + (i % ncol) * (swatchsize + 5) + "px";
+        swatch.style.top = top + "px";
+        swatch.style.width = swatchsize + "px";
+        swatch.style.height = swatchsize + "px";
+        swatch.addEventListener("click", function (e) {color(this); });
+        content.appendChild(swatch);
+    }
+    top += swatchsize + 5;
+
+    var eraseBtn = document.createElement("input");
+    eraseBtn.type = "button";
+    eraseBtn.value="clear";
+    eraseBtn.id = "clear";
+    //eraseBtn.size = "6";
+    eraseBtn.style.position = "absolute";
+    eraseBtn.style.left = startpos + "px";
+    eraseBtn.style.top = top + "px";
+    eraseBtn.onclick = erase;
+    content.appendChild(eraseBtn);
+}
+
+function initCanvas() {
+    createCanvas();
+
+    canvas = document.getElementById('can');
+    ctx = canvas.getContext("2d");
+    w = canvas.width;
+    h = canvas.height;
+
+    canvas.addEventListener("mousemove", function (e) {
+        findxy('move', e)
+    }, false);
+    canvas.addEventListener("mousedown", function (e) {
+        findxy('down', e)
+    }, false);
+    canvas.addEventListener("mouseup", function (e) {
+        findxy('up', e)
+    }, false);
+    canvas.addEventListener("mouseout", function (e) {
+        findxy('out', e)
+    }, false);
+}
+
+function color(obj) {
+    switch (obj.id) {
+        case "green":
+            x = "green";
+            break;
+        case "blue":
+            x = "blue";
+            break;
+        case "red":
+            x = "red";
+            break;
+        case "yellow":
+            x = "yellow";
+            break;
+        case "orange":
+            x = "orange";
+            break;
+        case "black":
+            x = "black";
+            break;
+        case "white":
+            x = "white";
+            break;
+    }
+}
+
+function draw() {
+    ctx.beginPath();
+    ctx.moveTo(prevX, prevY);
+    ctx.lineTo(currX, currY);
+    ctx.strokeStyle = x;
+    ctx.lineWidth = linewidth;
+    ctx.stroke();
+    ctx.closePath();
+}
+
+function erase() {
+    ctx.clearRect(0, 0, w, h);
+}
+
+function findxy(res, e) {
+    if (res == 'down') {
+        prevX = currX;
+        prevY = currY;
+        currX = e.clientX - canvas.offsetLeft;
+        currY = e.clientY - canvas.offsetTop;
+
+        flag = true;
+        dot_flag = true;
+        if (dot_flag) {
+            ctx.beginPath();
+            ctx.fillStyle = x;
+            ctx.fillRect(currX, currY, 2, 2);
+            ctx.closePath();
+            dot_flag = false;
+        }
+    }
+    if (res == 'up' || res == "out") {
+        flag = false;
+    }
+    if (res == 'move') {
+        if (flag) {
+            prevX = currX;
+            prevY = currY;
+            currX = e.clientX - canvas.offsetLeft;
+            currY = e.clientY - canvas.offsetTop;
+            draw();
+        }
+    }
+}
+
