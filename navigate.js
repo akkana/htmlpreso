@@ -310,6 +310,21 @@ function getURLParameter(name) {
          || [null, ''])[1].replace(/\+/g, '%20')) || null;
 }
 
+// Given a URL, an image name, etc. strip off the part between
+// the last / and the last ., for display purposes.
+function stripSlidename(name) {
+  slash = name.lastIndexOf("/");
+  if (slash >= 0)
+    slash += 1;
+  else
+    slash = 0;
+  dot = name.lastIndexOf(".");
+  if (dot >= 0)
+    return (name.substring(slash, dot));
+  else
+    return (name.substring(slash));
+}
+
 function initPage() {
   var body = document.getElementsByTagName("body")[0];
   var nextdiv = document.createElement("div");
@@ -351,7 +366,7 @@ function initPage() {
     nextdiv.innerHTML = "The end";
   }
   else {
-    var nextname = slides[curSlide+1];
+    var nextname = stripSlidename(sslides[curSlide+1]);
     var slash = nextname.lastIndexOf('/');
     if (slash < 0)
       slash = 0;

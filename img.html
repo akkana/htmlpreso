@@ -6,7 +6,7 @@
   <script src="navigate.js"></script>
   <script src="notes.js"></script>
   <link rel="stylesheet" type="text/css" href="slides.css">
-  <title>Slide Presentations with HTML and Javascript</title>
+  <title>HTML Presentations</title>
 <script type="text/javascript">
 var imgname;
 
@@ -14,50 +14,63 @@ function getImgName() {
   var url = document.URL;   // could also use window.location
   var titlestr = null;
 
-  // Is there a title specified?
-  var ampersand = url.lastIndexOf("&");
-  if (ampersand > 0) {
-    titlestr = url.substring(ampersand+1, url.length);
-    // Then remove it from the URL
-    url = url.substring(0, ampersand);
-
-    // titlestr might be specified as &title= so look for title=
-    if (titlestr.indexOf("title=") == 0) {
-        titlestr = titlestr.substring(6, titlestr.len);
-    }
-    h1 = document.getElementById("imgtitle");
-    // I never fail to be amazed by JS's lack of ability to
-    // handle URI encoding/decoding natively.
-    // I mean, it's not like it's meant to be used on the web or anything.
-    h1.innerHTML = decodeURIComponent(titlestr.replace(/\+/g, '%20'));
-  }
-
   var question = url.lastIndexOf("?");
   if (question > 0) {
     imgname = url.substring(question+1, url.length);
+    var ampersand = imgname.lastIndexOf("&");
+    if (ampersand > 0) {
+      imgname = imgname.substring(0, ampersand);
+    }
   }
-  if (checkNotes && imgname) {
+  // If there's no question mark in the URL, then it's hopeless.
+  else {
+    imgname = "none";
+  }
+
+  // Is there a title specified?
+  titlepos = url.lastIndexOf("&title=");
+  if (titlepos > 0) {
+    titlestr = url.substring(titlepos+7);
+    // Find the end of the title, and remove the title from the url
+    var ampersand = titlestr.lastIndexOf("&");
+    if (ampersand > 0) {
+      url = url.substring(0, titlepos) + url.substring(ampersand);
+      titlestr = titlestr.substr(0, ampersand);
+    }
+    else {
+      url = url.substring(0, titlepos);
+    }
+  }
+  else {
+    // If no title was specified, use the image name as the title,
+    // with directory paths or extensions removed.
+    titlestr = stripSlidename(imgname);
+  }
+
+  spacetitle = decodeURIComponent(titlestr.replace(/\+/g, '%20'));
+  if (document.title)
+    document.title += ": " + spacetitle;
+  else
+    document.title = spacetitle;
+
+  // Only show a visible title if it was specified in the URL.
+  if (titlepos > 0) {
+    h1 = document.getElementById("imgtitle");
+    if (h1)
+      h1.innerHTML = spacetitle;
+  }
+
+  if (imgname) {
     checkNotes(imgname);
   }
 
-  img = document.getElementById("fullpage");
-  if (imgname) {
-    img.src = imgname;
-
-    // Also add the image's basename to the title,
-    // if there's no title specified.
-    if (!titlestr) {
-      slashindex = imgname.lastIndexOf('/');
-      ampindex = imgname.indexOf('&');
-      if (ampindex)
-        cleantitle = imgname.substring(slashindex + 1, ampindex);
-      else
-        cleantitle = imgname.substring(slashindex + 1);
-      titlestr = document.title + ": " + cleantitle;
-    }
-    document.title = titlestr;
+ if (imgname && typeof credits !== 'undefined') {
+    checkCredits(imgname);
   }
-  else alert("No imgname!");
+
+  img = document.getElementById("fullpage");
+  if (imgname)
+    img.src = imgname;
 
   initPage();
 }
@@ -67,17 +80,19 @@ function getImgName() {
 <body onload="getImgName();">
 
 <div id="page">
+
+<div id="imgcredit"></div>
+
 <h1 id="imgtitle"></h1>
 
 <!-- Yes, this is a table. So sue me. W3C should have made it easier
      to center with CSS.
  -->
-<table class="nopadding" width=100% height=100%><tr><td align=center valign=center>
+<table class="nopadding" width=100% height=100%>
+<tr><td align=center valign=center>
 <img id="fullpage">
 </td></tr>
 </table>
-
-<div id="imgcredit"></div>
 
 </div>
 

@@ -2,12 +2,26 @@ This is a template to help you write presentation slides in HTML,
 so they can be displayed on the web as well as a live projector.
 It uses Javascript to advance to the next slide.
 
-You can see a live, self-documenting example at:
+It has lots of handy features for presentations:
+- write in HTML and CSS, so you only need the same skills you'd need
+for web design
+- bulleted lists that show one item at a time
+- an easy way to show fullscreen images -- you don't need to make a slide for
+each image
+- a drawing option, so you can sketch with the mouse on top of any slide
+- an optional timer for Ignite or Pecha Kucha shows
+- notes on the right part of a wide-screen laptop
+- minor features like screen blanking and table-of-contents
+
+This repository is itself a self-documenting presentation:
+check it out, then load index.html in a browser (with javascript enabled)
+and run through the slides.
+
+Since you can't do that without checking it out first,
+you can see a live, self-documenting example on the web at:
 http://shallowsky.com/software/presentation/
 
-The repository is a self-documenting presentation: after you check
-it out, load index.html in a browser (with javascript enabled)
-and run through the slides.
+# How to Present
 
 You can use any browser to present the slides -- though as of
 Firefox Quantum, Mozilla seems to have made it impossible to do
@@ -29,6 +43,8 @@ https://github.com/akkana/scripts/blob/master/gpreso
 
 Most distros either have python-webkit-gtk or Qt5WebEngine but not both.
 I don't know which of these works better on Mac or Windows: let me know.
+
+# PDF and Printing
 
 If you need to make a PDF version of your slides, for printing or
 because a conference wants a downloadable version and doesn't grok a
