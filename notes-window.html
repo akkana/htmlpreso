@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script src="slides.js"></script>
+  <script src="navigate.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/preso.css">
+  <title>HTML Presentations: Separate Notes Window</title>
+</head>
+
+<body onload="initPage();">
+
+<div id="page">
+<div id="content">
+
+<h1 class="title">Separate Notes Window</h1>
+<p>
+If you treat the projector as a second monitor, you might want a
+separate window so you can view your notes on the laptop screen.
+<p>
+Edit <i>navigate.js</i> and uncomment the call to
+<i>updateNoteWindow()</i> in <i>initPage</i>.
+
+</div>
+</div>
+
+<div id="notes">
+You'll probably have to resize and position the window after it pops up,
+but you should only need to do that once.
+<p>
+After that, subsequent slides should re-use the existing window.
+</div>
+
+</body>
+</html>
