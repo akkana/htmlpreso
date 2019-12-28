@@ -1,0 +1,33 @@
+/* A laptop with a 1920x1080 screen,
+ * displaying to a 1024x768 projector.
+ */
+
+body {
+  width: 1920px;
+  height: 1080px;
+}
+
+#page {
+  width: 1024px;
+  height: 768px;
+}
+
+#notes {
+  position: absolute; left: 1035px;
+  top: 10px;
+  width: 885px;
+  max-width: 885px;
+}
+
+#nextdiv {
+  position: absolute; right: 5px; top: 740px;
+  /* width: 340px;
+     max-width: 330px;
+  */
+}
+
+#content {
+  margin-left: 130px;
+  margin-top: 75px;
+  width: 800px;
+}

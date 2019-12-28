@@ -1,0 +1,43 @@
+/* White on Black colors, good for dark rooms and planetarium presentations */
+
+body {
+  background: black;
+  color: white;
+}
+
+a { color: #ff0; }
+
+.greyed { color: #678; }
+
+
+figcaption { color: lightblue; }
+figcaption a { color: lightblue; }
+figcaption.big { color: yellow; }
+
+strike { color: #444; }
+
+h1 { color: #ff0; }
+
+#imgtitle {  color: yellow; }
+
+#imgcredit, #imgcredit a, .imgcredit {
+  color: lightblue;
+}
+
+.note { color: #f0a; }
+
+code { color: white; background: black; }
+
+pre {
+  color: white;
+  background: black;
+}
+
+pre em { color: #ff3; }
+pre b { color: #ff3; }
+
+.popup { color: white; }
+
+#nextlink {
+  background: #644;
+  color: white;

@@ -1,10 +1,13 @@
-/* slide stylesheet for 1024x768 projector, 1366x768 laptop:
- * notes on rightmost 342 px.
- */
+/* slide stylesheets for HTMLPreso */
+
+/* Import the appropriate color scheme and screen size */
+@import "colors-light.css";
+@import "screen-1024-1920.css";
 
 #navigation {
-  /* Comment out this next line to make navigation controls visible
-     in the upper right corner:
+  /* Comment out the display: none line
+     to make navigation controls visible in the upper right corner,
+     like for a website:
    */
   display: none;
   font-size: 20px;
@@ -13,36 +16,21 @@
   z-index: 100;
 }
 
-.greyed { color: #678; }
-
 body {
-  background: white url(pix/vfade.jpg) repeat-x;
-  margin-top: 0em;
-  margin-left: 0em;
-  font-size: 40px;
+  font-size: 44px;
   line-height: 1.6em;
 
-  width: 1366px;
-  height: 768px;
+/*
   position: absolute; left: 0px; top: 0px;
   border: 0; margin: 0; padding: 0;
   overflow: hidden;
+*/
   outline: red solid thin;
-
-  /* If you get stuck on an 800x600 projector, use these:
-   * unfortunately it doesn't work on all browsers.
-   * -moz-transform works on firefox but it also needs the postion:absolute.
-   * zoom works on webkit and IE.
-   * Nothing works on Opera.
-  zoom: 78.125%;
-  position: absolute; left: 0px; top: 0px;
-  -moz-transform: scale(.78125, .78125);
-   */
 }
 
+a { text-decoration: none; font-style: italic; font-weight: bold; }
+
 #page {
-  width: 1024px;
-  height: 768px;   /* !768 because of firefox residual top bar */
   position: absolute; left: 0px; top: 0px;
   border: 0; margin: 0; padding: 0;
   outline: #00a solid thin;
@@ -50,13 +38,11 @@ body {
   /* background: url(pix/something.png) no-repeat bottom right; */
 }
 
-/*#page > img { margin: 60px 40px 30px 40px; } */
-
 /* Image on pages like img.html where it's the only thing: */
 img#fullpage {
   /* position: absolute; */
   margin: 0; padding: 0; border: 0;
-  z-index: -1;
+  z-index: 1;
 }
 
 /* A similar class of absolute images, for use on other pages */
@@ -71,38 +57,48 @@ table.nopadding tbody, table.nopadding tr, table.nopadding td {
   padding: 0; margin: 0; border: 0;
 }
 
+/* Figure captions */
+
+figure { border: 0; margin: 0; padding: 0; }
+figcaption {
+  line-height: 1.2em;
+  font-size: .5em;
+  font-style: italic;
+}
+figcaption a { font-weight: normal; }
+figcaption.big { font-size: 1.1em; font-style: normal; }
+
+.floatleft { float: left; }
+.floatright { float: right; }
+
 #notes {
-  position: absolute; left: 1035px;
-  top: 5px;
-  width: 330px; /* Need to set a maximum, and clip if it doesn't fit! */
   font-family: sans-serif;
-  font-size: 24px;
-  line-height: 1.4em;
-  max-width: 330px;
+  font-size: 35px;
+  line-height: 1.3em;
   overflow: hidden !important;
 }
 
+#notes li { margin: .1em 0em; }
+#notes ul { margin: .1em; }
+#notes p { margin: .9em 3px; }
+
+#notes .small { line-height: 1em; font-size: 31px; }
+#notes .small p { margin: .6em 3px; }
+
 #nextdiv {
-  position: absolute; left: 1025px; bottom: .2em; width: 340px;
   font-size: 24px;
   line-height: 1.4em;
   text-align: right;
-  max-width: 330px;
   overflow: hidden !important;
 }
 
 #content {
-  margin-left: 130px;
-  margin-top: 75px;
-  width: 800px;
   font-family: dejavu sans,arial,sans-serif;
   font-size: 1em;
 }
 
 table { font-size: 1em; }
 td, th { margin: 0; }
-
-strike { color: #444; }
 
 th { text-align: left; }
 td { padding: .5em .3em; }
@@ -113,7 +109,6 @@ h1 {
   font-family: Times New Roman, serif;
   margin: .75em 2px .5em 0em;
   font-size: 1.5em;
-  color: #700;
 }
 
 h3 {
@@ -142,10 +137,22 @@ h3 {
 }
 
 #imgtitle {
-  position: absolute; left: 100; top: 10;
-  color: brown;
+  position: absolute; left: 50px; top: 10px;
   text-shadow: 3px 3px 3px #000000;
 }
+
+/* Dedicated image credit on the lower right */
+#imgcredit {
+  position: absolute; right: .5em; bottom: 3px;
+  text-shadow: 3px 3px 3px #000000;
+  line-height: 1.2em;
+}
+
+#imgcredit, #imgcredit a, .imgcredit {
+  font-size: .8em;
+}
+
+/* Image credit can also appear somewhere else, like a caption */
 
 /* A style to put on #page when it has a background image;
  * this is in addition to style=url(pix/something.jpg).
@@ -163,24 +170,20 @@ h2 {
   font-size: 1.0em;
 }
 
-a { text-decoration: none; font-style: italic; font-weight: bold;
- color: #00b; }
-
 em { font-style: italic; font-weight: bold; }
 
-#content ul { list-style-image: url("pix/red.png"); }
-
-#content ul.nobullets {
-  list-style-type: none;
-  list-style-image: none;
-}
+#content ul { list-style-image: url("pix/bulletmoon.gif"); }
 
 .note {
   font-size: .8em;
   font-style: italic;
-  color: #f0a;
   /* This doesn't work and I hate CSS: */
   margin-bottom: 30px !important;
+}
+
+#content ul.nobullets {
+  list-style-type: none;
+  list-style-image: none;
 }
 
 li { margin-top: .8em; margin-bottom: .4em; padding-left: .4em;
@@ -196,21 +199,19 @@ dt { font-weight: bold; margin-top: .6em; }
   visibility: hidden;
 }
 
-code { color: white; background: black; font-size: .8em;
+code { font-size: .8em;
        padding-left: 25px; padding-right: 25px; }
 
 pre {
   font-size: .58em;
   line-height: 1.3em;
-  color: white;
-  background: black;
   padding: .2em;
   border: 3px inset white;
   white-space: pre-wrap;  /* For ff2, use -moz-pre-wrap */
 }
 
-pre em { color: #ff3; font-weight: bold; }
-pre b { color: #ff3; font-weight: bold; font-size: 1.1em; }
+pre em { font-weight: bold; }
+pre b { font-weight: bold; font-size: 1.1em; }
 
 .smallpre {
   margin-top: -30px;
@@ -227,7 +228,7 @@ pre b { color: #ff3; font-weight: bold; font-size: 1.1em; }
   margin-left: -75px;
 }
 
-blockquote { font-size: 1.2em; }
+blockquote { font-size: .8em;   line-height: 1.3em; }
 
 strong { font-weight: bold; text-decoration: underline; }
 
@@ -243,19 +244,18 @@ strong { font-weight: bold; text-decoration: underline; }
 
 .popup {
   background: #644;
-  color: white;
   font-size: .6em;
   border: 2px outset;
   position: absolute;
+  -moz-box-shadow: 8px 8px 15px #333;
   -webkit-box-shadow: 8px 8px 15px #333;
   box-shadow: 8px 8px 15px #333;
 }
 
 #nextlink {
-  background: #644;
-  color: white;
   border: 2px outset;
   position: absolute !important; right: 1em !important; bottom: 1em !important;
+  -moz-box-shadow: 8px 8px 15px #333;
   -webkit-box-shadow: 8px 8px 15px #333;
   box-shadow: 8px 8px 15px #333;
   z-index: 99;
@@ -268,14 +268,4 @@ strong { font-weight: bold; text-decoration: underline; }
 @media print {
   body { width: 1024px; }
   #notes, #nextdiv { display: none; }
-}
-
-/* Slide info and countdown for Ignite/autoadvance: */
-#slideno {
-  position: absolute !important; right: 2px !important; top: .5em !important;
-  font-size: 35px;
-}
-#countdown {
-  position: absolute !important; right: 2px !important; top: 1.5em !important;
-  font-size: 35px;
 }

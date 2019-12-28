@@ -1,0 +1,20 @@
+/*
+ * Displaying to an 800x600 projector.
+ * UNTESTED: It's been so long since I actually ran across a projector
+ * that couldn't do 1024.
+ */
+
+body {
+/* If you get stuck on an 800x600 projector, use these:
+ * unfortunately it doesn't work on all browsers.
+ * -moz-transform works on firefox but it also needs the postion:absolute.
+ * zoom works on webkit and IE.
+ * Nothing works on Opera.
+ */
+  zoom: 78.125%;
+  position: absolute; left: 0px; top: 0px;
+  -moz-transform: scale(.78125, .78125);
+
+  width: 1920px;
+  height: 1080px;
+}
