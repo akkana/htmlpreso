@@ -3,8 +3,13 @@
  */
 
 var notes = {
-    "pix/just-image.jpg" : "Currently notes are per image, so if you show it once without a title and later with one, the notes will be the same.",
+    "pix/just-image.jpg" : "That way you don't have to make a zillion HTML files for all your images.",
     "pix/img-notes.jpg" : "Place note here",
+}
+
+var credits = {
+    "pix/just-image.jpg" : "Image by me, using GIMP",
+    "pix/img-notes.jpg" : "Image by me, using GIMP"
 }
 
 function checkNotes(imgname) {
