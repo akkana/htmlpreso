@@ -8,9 +8,9 @@ var notes = {
 }
 
 function checkNotes(imgname) {
-  var note = notes[imgname];
-  if (note) {
-    var noteArea = document.getElementById("notes");
-    noteArea.innerHTML = note;
-  }
+    var note = notes[imgname];
+    if (note) {
+        var noteArea = document.getElementById("notes");
+        noteArea.innerHTML = note;
+    }
 }

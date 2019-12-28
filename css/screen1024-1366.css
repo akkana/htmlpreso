@@ -1,9 +1,0 @@
-/* A small laptop with a 1366 screen,
- * displaying to a 1024x768 projector.
- */
-
-body {
-  width: 1366px;
-  height: 768px;
-}
-

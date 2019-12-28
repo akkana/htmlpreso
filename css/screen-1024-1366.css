@@ -1,4 +1,4 @@
-/* A laptop with a 1920x1080 screen,
+/* A small laptop with a 1366 screen,
  * displaying to a 1024x768 projector.
  */
 
@@ -11,11 +11,12 @@
   position: absolute; left: 1035px;
   top: 10px;
   width: 885px;
-  max-width: 885px;
+  max-width: 330px;
 }
 
 #nextdiv {
   position: absolute; right: 5px; top: 740px;
+  /* max-width: 330px; */
 }
 
 #content {

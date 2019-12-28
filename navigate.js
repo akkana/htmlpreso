@@ -380,7 +380,7 @@ function initPage() {
 
     // OPTIONAL: If using a separate notes window, update it.
     // If not, comment this line out.
-    updateNoteWindow()
+    // updateNoteWindow()
 
     // For Ignite or similar auto-advancing talks, uncomment the next line
     // and pass the number of seconds per slide (15 for Ignite):
@@ -388,11 +388,14 @@ function initPage() {
 }
 
 function checkCredits(imgname) {
-    var credit = credits[imgname];
-    if (credit) {
-        var creditArea = document.getElementById("imgcredit");
-        creditArea.innerHTML = credit;
+    try {
+        var credit = credits[imgname];
+        if (credit) {
+            var creditArea = document.getElementById("imgcredit");
+            creditArea.innerHTML = credit;
+        }
     }
+    catch(err) { }
 }
 
 
@@ -405,7 +408,6 @@ function updateNoteWindow() {
     // -- use the same page for slide and notes, but with #notes appended
     // to the URL in the popup, in which case we'll remove most of the
     // page content except for notes.
-    console.log("updateNoteWindow");
 
     if (window.location.hash.indexOf('#notes') === -1) {
         window.open(window.location + '#notes', 'noteWin',
@@ -415,15 +417,19 @@ function updateNoteWindow() {
 
     // If here, it's the popup notes window.
     // Replace most of the window that isn't notes.
-    var div = document.getElementById("page");
-    div.remove();
-    div = document.getElementById("nextdiv");
-    div.remove();
-    div = document.getElementById("navigation");
-    div.remove();
+    var node = document.getElementById("page");
+    if (node)
+        node.remove();
+    node = document.getElementById("nextDiv");
+    if (node)
+        node.remove();
+    node = document.getElementById("navigation");
+    if (node)
+        node.remove();
 
-    div = document.getElementById("notes");
-    div.id = "fullnotes";
+    node = document.getElementById("notes");
+    if (node)
+        node.id = "fullnotes";
 }
 
 
