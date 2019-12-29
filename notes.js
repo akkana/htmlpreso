@@ -3,8 +3,8 @@
  */
 
 var notes = {
-    "pix/just-image.jpg" : "That way you don't have to make a zillion HTML files for all your images.",
-    "pix/img-notes.jpg" : "Place note here",
+    "pix/just-image.jpg" : "That way you don't have to make a zillion HTML files for all your images.<p>Also notice the image attribution in the lower right.",
+    "pix/img-notes.jpg" : "Place note here.<p>The attribution goes in the same file, but in the variable <i>credits</i> rather than <i>notes</i> (see the next slide).",
 }
 
 var credits = {

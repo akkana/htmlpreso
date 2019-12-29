@@ -2,7 +2,7 @@
 
 /* Import the appropriate color scheme and screen size */
 @import "colors-light.css";
-@import "screen-1024-1920.css";
+@import "screen-1024-1366.css";
 
 #navigation {
   /* Comment out the display: none line
