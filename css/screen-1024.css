@@ -1,0 +1,25 @@
+/* A small laptop with a 1366 screen,
+ * displaying to a 1024x768 projector.
+ */
+
+#page {
+  width: 1024px;
+  height: 768px;
+}
+
+#notes {
+  position: absolute; left: 1035px;
+  top: 10px;
+  width: 885px;
+  max-width: 330px;
+}
+
+#nextdiv {
+  position: absolute; right: 5px; bottom: 5px;
+}
+
+#content {
+  margin-left: 130px;
+  margin-top: 75px;
+  width: 800px;
+}

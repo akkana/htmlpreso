@@ -1,44 +1,34 @@
 /* -*- mode: javascript; indent-tabs-mode: nil; js-indent-level: 4 -*- */
 
 // JavaScript Slide Presentation software.
-// Copyright 2003-2018 by Akkana Peck.
+// Copyright 2003-2020 by Akkana Peck.
 // This software is licensed under the GNU public license v2 (or later) --
 // Share and enjoy!
 
 // See a presentation on how to use it at
 // http://shallowsky.com/linux/presentations/
 
+// OPTIONAL: Use a separate notes window?
+var useNotesWin = true;
+
 var curSlide = indexOfPage();
 
-//
-// Add the event listener.
-// This has to be on keydown or keyup because webkit doesn't
-// generate keypress events for nonprintable keys.
-if (document.addEventListener) {        // DOM way
-    document.addEventListener("keydown", onKeyDown, false);
-
-  //document.addEventListener("keypress", onKeyPress, false);
-}
-else if (document.all)                  // IE way
-    document.attachEvent("onkeydown", onKeyDown);
-
-/*
-function onKeyPress(e) {
-    console.log("KeyPress: key = " + e.key + ", keyCode = " + e.keyCode + ", charCode = " + e.charCode);
-    return;
-}
-*/
 
 //
 // Keypress navigation
 function onKeyDown(e)
 {
+    var targetWin = window.opener;
+    if (!targetWin)
+        targetWin = window;
+
     // IE doesn't see the event argument passed in, so get it this way:
     if (window.event) e = window.event;
 
     /* Debugging stuff:
     if (typeof console != "undefined")
-        console.log("key press, char code " + e.charCode + ", key code " + e.keyCode
+        console.log("key press, char code " + e.charCode
+                    + ", key code " + e.keyCode
                     + ", " + e.ctrlKey + ", " + e.altKey + ", " + e.metaKey );
      */
 
@@ -65,18 +55,18 @@ function onKeyDown(e)
         //alert("shift key! keycode " + e.keyCode + ", charcode " + e.charCode);
         switch (e.keyCode) {
           case 33:    // Page Up
-            tableOfContents();
+            targetWin.tableOfContents();
             e.preventDefault();
             return false;
 
           case 116:   // F5, sent by some presenters, in Webkit
             // alert("Shift+F5: Supposedly called preventDefault()");
-            tableOfContents();
+            targetWin.tableOfContents();
             e.preventDefault();
             return false;
 
           case 68:    // shift-D, to initiate drawing
-            initCanvas();
+            targetWin.initCanvas();
             e.preventDefault();
             return false;
         }
@@ -89,13 +79,13 @@ function onKeyDown(e)
     if (e.charCode) {
         switch (e.charCode) {
           case 32:
-            nextSlide();
+            targetWin.nextSlide();
             e.preventDefault();
             return false;
           // The Logitech Presenter sends a period from the "blank screen" btn.
           // But most presenters seem to send b.
           case 46:
-            blankScreen();
+            targetWin.blankScreen();
             e.preventDefault();
             return false;
         }
@@ -108,14 +98,14 @@ function onKeyDown(e)
         // In auto-advance mode on the first slide, spacebar starts the countdown.
         if (countdownSecs > 0 && curSlide == 0 && !countdown) {
             countdown = true;
-            startCountdown(curSlide);
+            targetWin.startCountdown(curSlide);
             return;
         }
       // else fall through to call nextSlide():
       case 34:    // Page Down
       case 40:    // Arrow Down
       case 39:    // Arrow Right
-        nextSlide();
+        targetWin.nextSlide();
         e.preventDefault();
         return false;
 
@@ -123,25 +113,25 @@ function onKeyDown(e)
       case 33:    // Page Up
       case 38:    // Arrow Up
       case 37:    // Arrow Left
-        prevSlide();
+        targetWin.prevSlide();
         e.preventDefault();
         return false;
 
       case 36:    // Home
-        firstSlide();
+        targetWin.firstSlide();
         e.preventDefault();
         return false;
 
       case 35:    // End
-        lastSlide();
+        targetWin.lastSlide();
         e.preventDefault();
         return false;
 
-        case 66:    // b
-        case 190:   // firefox quantum now sends this for .
-            blankScreen();
-            e.preventDefault();
-            return false;
+      case 66:    // b
+      case 190:   // firefox quantum now sends this for .
+        targetWin.blankScreen();
+        e.preventDefault();
+        return false;
 
       // Many presenters toggle between ESC and Shift-F5.
       // I think on PowerPoint it's supposed to toggle slideshow mode.
@@ -149,7 +139,7 @@ function onKeyDown(e)
       // Here, we could show a table of contents.
       case 27:     // Escape
       case 116:    // F5
-        tableOfContents();
+        targetWin.tableOfContents();
         e.preventDefault();
         return false;
 
@@ -157,7 +147,7 @@ function onKeyDown(e)
       case 46:      // Delete
         countdown = !countdown;
         if (countdown)
-            startCountdown(null);
+            targetWin.startCountdown(null);
     }
 }
 
@@ -192,14 +182,19 @@ function initPoints(num_vis)
     initPage();
 }
 
+//
+// Figure out where we are in the presentation from the URL,
+// with anything after ? and # stripped off.
+//
 function indexOfPage() {
     var url = document.URL;
-    var question = document.URL.lastIndexOf("?");
-    var lastslash;
+    var question = url.lastIndexOf("?");
     if (question > 0)
-        lastslash = document.URL.lastIndexOf("/", question);
-    else
-        lastslash = document.URL.lastIndexOf("/");
+        url = url.substring(0, question);
+    var hash = url.lastIndexOf("#");
+    if (hash > 0)
+        url = url.substring(0, hash);
+    var lastslash = url.lastIndexOf("/");
     var filename = url.substring(lastslash+1, url.length);
 
     // JS 1.6 has Array.indexOf, but that doesn't work in Opera/Konq/etc.
@@ -325,15 +320,59 @@ function stripSlidename(name) {
         return (name.substring(slash));
 }
 
+//
+// initPage is called from both main windows and note windows,
+// but does very different things in the two cases.
+//
 function initPage() {
-    var nextdiv = document.createElement("div");
-    nextdiv.id = "nextdiv";
-    nextdiv.style.position = "absolute";
-    document.body.appendChild(nextdiv);
+    var isPresoWin = (window.location.hash.indexOf('#notes') === -1)
+        || !useNotesWin;
 
+    //
+    // Add the key event listener, if this isn't a notes window.
+    // This has to be on keydown or keyup because webkit doesn't
+    // generate keypress events for nonprintable keys.
+    //
+    if (document.addEventListener) {        // DOM way
+        document.addEventListener("keydown", onKeyDown, false);
+
+        //document.addEventListener("keypress", onKeyPress, false);
+    }
+    else if (document.all)                  // IE way
+        document.attachEvent("onkeydown", onKeyDown);
+
+    // Things to do only in the main preso window:
+    if (isPresoWin)
+        initPresoPage();
+
+    // If there is a separate notes win, remove the note-like stuff
+    // from the main window.
+    if (isPresoWin && useNotesWin)
+        removeNoteElements();
+
+    // Notes stuff should be done only in the notes window if there is one,
+    // but if not using a separate notes win, do it in the main preso win.
+    if (!useNotesWin || !isPresoWin)
+        initNotesElements();
+
+    // Only in a separate notes window, remove the elements from the
+    // actual slide presentation.
+    if (useNotesWin && !isPresoWin)
+        initNotesWin();
+
+    // OPTIONAL:
+    // For Ignite or similar auto-advancing talks, uncomment the next line
+    // and pass the number of seconds per slide (15 for Ignite):
+    //initAutoAdvance(15);
+}
+
+//
+// Initialize the slide content the audience sees, plus navigation, etc.
+//
+function initPresoPage() {
+    // Add a title if there isn't already one, from the first H1:
     headers = document.getElementsByTagName("h1");
     if (headers && headers[0]) {
-        // Add a title if there isn't already one, from the first H1:
         if (!document.title) {
             document.title = headers[0].innerHTML;
         }
@@ -353,6 +392,61 @@ function initPage() {
     // Insert it at the beginning of the body, before the first child node:
     document.body.insertBefore(navspan, document.body.childNodes[0]);
 
+    // Pop up the notes window.
+    // This uses the clever method at
+    // https://remysharp.com/2013/04/02/creating-popups-without-html-files :
+    // use the same page for slide and notes, but with #notes appended
+    // to the URL in the popup, in which case we'll remove most of the
+    // page content except for notes.
+    window.open(window.location + '#notes', 'noteWin',
+                'width=300,height=300');
+}
+
+//
+// If in the main window when using a noteswin, hide the notes and related::
+//
+function removeNoteElements() {
+    var node = document.getElementById("notes");
+    //node.style.visibility = "hidden";
+    if (node)
+        node.remove();
+
+    node = document.getElementById("nextdiv");
+    if (node)
+        node.remove();
+}
+
+//
+// Things to do only if this is a separate notes window:
+// remove the slide presentation elements, size the body appropriately.
+//
+function initNotesWin() {
+    // If here, it's the popup notes window, not the main preso window.
+    // Replace most of the window that isn't notes.
+    var node = document.getElementById("body");
+    if (node) {
+        // Let the size follow the window.
+        node.style.width = "100%";
+        node.style.height = "100%";
+    }
+    var node = document.getElementById("page");
+    if (node)
+        node.remove();
+    node = document.getElementById("navigation");
+    if (node)
+        node.remove();
+
+    // Finally, rename the notes div so it gets a more fullpage style.
+    node = document.getElementById("notes");
+    if (node)
+        node.id = "fullnotes";
+}
+
+//
+// Initialize the elements that should only show in the notes area,
+// whether in a separate window or a #notes area of the preso window..
+//
+function initNotesElements() {
     // Add a note if there's one specified in the URL.
     note = getURLParameter("note");
     if (note) {
@@ -360,7 +454,10 @@ function initPage() {
         noteArea.innerHTML = note;
     }
 
-    //window.alert("This is slide " + i);
+    var nextdiv = document.createElement("div");
+    nextdiv.id = "nextdiv";
+    document.body.appendChild(nextdiv);
+
     if (curSlide >= slides.length - 1) {    // last slide
         nextdiv.innerHTML = "The end";
     }
@@ -377,15 +474,8 @@ function initPage() {
         else
             nextdiv.innerHTML = "Next: " + nextname.substring(slash, dot);
     }
-
-    // OPTIONAL: If using a separate notes window, update it.
-    // If not, comment this line out.
-    // updateNoteWindow()
-
-    // For Ignite or similar auto-advancing talks, uncomment the next line
-    // and pass the number of seconds per slide (15 for Ignite):
-    //initAutoAdvance(15);
 }
+
 
 function checkCredits(imgname) {
     try {
@@ -396,40 +486,6 @@ function checkCredits(imgname) {
         }
     }
     catch(err) { }
-}
-
-
-////////////////////////////////////////////////////////////////
-// Optional: Notes in separate window
-
-function updateNoteWindow() {
-    // Use the clever method at
-    // https://remysharp.com/2013/04/02/creating-popups-without-html-files
-    // -- use the same page for slide and notes, but with #notes appended
-    // to the URL in the popup, in which case we'll remove most of the
-    // page content except for notes.
-
-    if (window.location.hash.indexOf('#notes') === -1) {
-        window.open(window.location + '#notes', 'noteWin',
-                    'width=300,height=300');
-        return;
-    }
-
-    // If here, it's the popup notes window.
-    // Replace most of the window that isn't notes.
-    var node = document.getElementById("page");
-    if (node)
-        node.remove();
-    node = document.getElementById("nextDiv");
-    if (node)
-        node.remove();
-    node = document.getElementById("navigation");
-    if (node)
-        node.remove();
-
-    node = document.getElementById("notes");
-    if (node)
-        node.id = "fullnotes";
 }
 
 
