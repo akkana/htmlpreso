@@ -8,8 +8,8 @@
 // See a presentation on how to use it at
 // http://shallowsky.com/linux/presentations/
 
-// OPTIONAL: Use a separate notes window?
-var useNotesWin = true;
+// OPTIONAL: Use a separate notes window.
+var useNotesWin = false;
 
 var curSlide = indexOfPage();
 
@@ -92,7 +92,6 @@ function onKeyDown(e)
     }
 
     // Now keyCodes. There don't seem to be any cross-browser symbols for these.
-    console.log("countdownSecs: ", countdownSecs);
     switch (e.keyCode) {
       case 32:    // Space
         // In auto-advance mode on the first slide, spacebar starts the countdown.
@@ -182,26 +181,43 @@ function initPoints(num_vis)
     initPage();
 }
 
+
 //
-// Figure out where we are in the presentation from the URL,
-// with anything after ? and # stripped off.
+// Figure out where we are in the presentation from the URL.
+// This assumes all HTML files are in the same base directory
+// and that the list in slides.js does not use subdirectories.
+// There also can't be any slashes after the filename or image file name
 //
 function indexOfPage() {
     var url = document.URL;
-    var question = url.lastIndexOf("?");
-    if (question > 0)
-        url = url.substring(0, question);
-    var hash = url.lastIndexOf("#");
-    if (hash > 0)
-        url = url.substring(0, hash);
-    var lastslash = url.lastIndexOf("/");
-    var filename = url.substring(lastslash+1, url.length);
+
+    // First strip out any #notes
+    const ISNOTES = "#notes";
+    const ISNOTESLEN = ISNOTES.length;
+    var isnotes = url.indexOf(ISNOTES, url.length - ISNOTESLEN);
+    if (isnotes > 0)
+        url = url.substring(0, url.length - ISNOTESLEN);
+
+    // Are there query params starting with ? ?
+    const queryString = window.location.search;
+    var startPos;
+    if (queryString)
+        startPos = url.length - queryString.length;
+    else
+        startPos = url.length;
+    var lastslash = url.lastIndexOf("/", startPos);
+    url = url.substring(lastslash+1);
+
+    // In case someone starts at /path/to/ without specifying index.html,
+    // treat a directory URL without a filename as a special case
+    // and assume it's the first slide:
+    if (!url)
+        return 0;
 
     // JS 1.6 has Array.indexOf, but that doesn't work in Opera/Konq/etc.
-    if (slides.indexOf) return slides.indexOf(filename);
-    var i;
-    for (i=0; i<slides.length; ++i) {
-        if (slides[i] == filename) return i;
+    if (slides.indexOf) return slides.indexOf(url);
+    for (var i=0; i<slides.length; ++i) {
+        if (slides[i] == url) return i;
     }
     return 0;
 }
@@ -212,7 +228,8 @@ function nextSlide() {
         // Make old-current point a more subtle color,
         // to emphasize only the new-current point.
         if (curPoint > 0)
-            points[curPoint-1].setAttribute("class", "greyed");
+            for (var i=0; i < curPoint; ++i)
+                points[i].setAttribute("class", "greyed");
         points[curPoint].style.visibility = "visible";
         curPoint = curPoint + 1;
 
@@ -341,24 +358,27 @@ function initPage() {
     else if (document.all)                  // IE way
         document.attachEvent("onkeydown", onKeyDown);
 
-    // Things to do only in the main preso window:
+    // Things to do only in the main preso window,
+    // whether or not there's a notes window::
     if (isPresoWin)
         initPresoPage();
 
-    // If there is a separate notes win, remove the note-like stuff
-    // from the main window.
-    if (isPresoWin && useNotesWin)
-        removeNoteElements();
+    console.log("isPresoWin?", isPresoWin, "useNotesWin?", useNotesWin);
+    // Using a separate notes window?
+    if (useNotesWin) {
+        // In the main window, remove all the notes/hints pieces.
+        if (isPresoWin)
+            removeNoteElements();
+        // In the notes window, add and populate them.
+        else
+            initNotesWin();
+    }
 
-    // Notes stuff should be done only in the notes window if there is one,
-    // but if not using a separate notes win, do it in the main preso win.
-    if (!useNotesWin || !isPresoWin)
+    // Else all in one window
+    else {
         initNotesElements();
+    }
 
-    // Only in a separate notes window, remove the elements from the
-    // actual slide presentation.
-    if (useNotesWin && !isPresoWin)
-        initNotesWin();
 
     // OPTIONAL:
     // For Ignite or similar auto-advancing talks, uncomment the next line
@@ -392,14 +412,15 @@ function initPresoPage() {
     // Insert it at the beginning of the body, before the first child node:
     document.body.insertBefore(navspan, document.body.childNodes[0]);
 
-    // Pop up the notes window.
+    // Pop up the notes window, if applicable.
     // This uses the clever method at
     // https://remysharp.com/2013/04/02/creating-popups-without-html-files :
     // use the same page for slide and notes, but with #notes appended
     // to the URL in the popup, in which case we'll remove most of the
     // page content except for notes.
-    window.open(window.location + '#notes', 'noteWin',
-                'width=300,height=300');
+    if (useNotesWin)
+        window.open(window.location + '#notes', 'noteWin',
+                    'width=300,height=300');
 }
 
 //
@@ -411,9 +432,40 @@ function removeNoteElements() {
     if (node)
         node.remove();
 
-    node = document.getElementById("nextdiv");
+    node = document.getElementById("nexthint");
     if (node)
         node.remove();
+}
+
+//
+// Create the nexthint div if it doesn't already exist,
+// and fill it will a hint on the name of the next slide.
+//
+function hintNextSlide(hintname) {
+    var nexthint = document.getElementById(hintname);
+    if (! nexthint) {
+        nexthint = document.createElement("div");
+        nexthint.id = hintname;
+        nexthint.classList.add("nexthint");
+        document.body.appendChild(nexthint);
+    }
+
+    if (curSlide >= slides.length - 1)    // last slide
+        nexthint.innerHTML = "The end";
+
+    else {
+        var nextname = stripSlidename(slides[curSlide+1]);
+        var slash = nextname.lastIndexOf('/');
+        if (slash < 0)
+            slash = 0;
+        else
+            slash += 1;
+        var dot = nextname.lastIndexOf('.');
+        if (dot < 0)
+            nexthint.innerHTML = "Next: " + nextname.substring(slash);
+        else
+            nexthint.innerHTML = "Next: " + nextname.substring(slash, dot);
+    }
 }
 
 //
@@ -421,6 +473,7 @@ function removeNoteElements() {
 // remove the slide presentation elements, size the body appropriately.
 //
 function initNotesWin() {
+    console.log("initNotesWin");
     // If here, it's the popup notes window, not the main preso window.
     // Replace most of the window that isn't notes.
     var node = document.getElementById("body");
@@ -440,6 +493,8 @@ function initNotesWin() {
     node = document.getElementById("notes");
     if (node)
         node.id = "fullnotes";
+
+    hintNextSlide("nexthint_noteswin");
 }
 
 //
@@ -454,26 +509,7 @@ function initNotesElements() {
         noteArea.innerHTML = note;
     }
 
-    var nextdiv = document.createElement("div");
-    nextdiv.id = "nextdiv";
-    document.body.appendChild(nextdiv);
-
-    if (curSlide >= slides.length - 1) {    // last slide
-        nextdiv.innerHTML = "The end";
-    }
-    else {
-        var nextname = stripSlidename(slides[curSlide+1]);
-        var slash = nextname.lastIndexOf('/');
-        if (slash < 0)
-            slash = 0;
-        else
-            slash += 1;
-        var dot = nextname.lastIndexOf('.');
-        if (dot < 0)
-            nextdiv.innerHTML = "Next: " + nextname.substring(slash);
-        else
-            nextdiv.innerHTML = "Next: " + nextname.substring(slash, dot);
-    }
+    hintNextSlide("nexthint");
 }
 
 
