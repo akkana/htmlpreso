@@ -1,9 +1,12 @@
 /* White on Black colors, good for dark rooms and planetarium presentations */
 
 body {
-  background: white;
+  background: #eff;
   color: black;
-  background: white url(../pix/vfade.jpg) repeat-x;
+}
+
+#page {
+  background-image: linear-gradient(to bottom right, #d0f0f0, #f4ffff, #fff);
 }
 
 a { color: #00f; }
