@@ -29,6 +29,13 @@ You'll probably have to resize and position the window after it pops up,
 but you should only need to do that once.
 <p>
 After that, subsequent slides should re-use the existing window.
+<p>
+Some browsers, like Firefox,
+<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=204285">block popups
+from <i>file://</i> URLs</a>.
+In that case, try enabling popups for your starting slide;
+or run a local web server and use <i>http://localhost/</i> for slides
+instead of <i>file://</i>.
 </div>
 
 </body>
