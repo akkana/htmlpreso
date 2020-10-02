@@ -5,65 +5,22 @@
   <script src="slides.js"></script>
   <script src="navigate.js"></script>
   <script src="notes.js"></script>
+  <script src="imgutils.js"></script>
   <link rel="stylesheet" type="text/css" href="css/preso.css">
-  <title>HTML Presentations</title>
+  <title>Mars in 2020</title>
 <script type="text/javascript">
-var imgname;
+  var imgname;
 
-function getImgName() {
-  var url = document.URL;   // could also use window.location
-  var titlestr = null;
+  function initImg() {
+      imgname = getSingleArg();
+      setupImage();
 
-  // Is there a title specified?
-  var ampersand = url.lastIndexOf("&");
-  if (ampersand > 0) {
-    titlestr = url.substring(ampersand+1, url.length);
-    // Then remove it from the URL
-    url = url.substring(0, ampersand);
-
-    // titlestr might be specified as &title= so look for title=
-    if (titlestr.indexOf("title=") == 0) {
-        titlestr = titlestr.substring(6, titlestr.len);
-    }
-    h1 = document.getElementById("imgtitle");
-    // I never fail to be amazed by JS's lack of ability to
-    // handle URI encoding/decoding natively.
-    // I mean, it's not like it's meant to be used on the web or anything.
-    h1.innerHTML = decodeURIComponent(titlestr.replace(/\+/g, '%20'));
+      initPage();
   }
-
-  var question = url.lastIndexOf("?");
-  if (question > 0) {
-    imgname = url.substring(question+1, url.length);
-    imgname = imgname.replace("#notes", "");
-  }
-  if (checkNotes && imgname) {
-    checkNotes(imgname);
-  }
-  if (checkCredits && imgname) {
-    checkCredits(imgname);
-  }
-
-  img = document.getElementById("fullpage");
-  if (imgname) {
-    img.src = imgname;
-
-    // Also add the image's basename to the title,
-    // if there's no title specified.
-    if (!titlestr) {
-      titlestr = document.title + ": "
-        + imgname.substring(imgname.lastIndexOf('/') + 1);
-    }
-    document.title = titlestr;
-  }
-  else alert("No imgname!");
-
-  initPage();
-}
 </script>
 </head>
 
-<body onload="getImgName();">
+<body onload="initImg();">
 
 <div id="page">
 <h1 id="imgtitle"></h1>

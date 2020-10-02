@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="slides.js"></script>
+<script src="navigate.js"></script>
+<script src="notes.js"></script>
+<script src="imgutils.js"></script>
+<link rel="stylesheet" type="text/css" href="css/preso.css">
+<title>Mars in 2020</title>
+<script type="text/javascript">
+ var imgname;
+
+ function initVid() {
+     vidname = getSingleArg();
+     console.log("vidname:", vidname);
+
+     if (typeof(titlestr) == "undefined" || !titlestr) {
+         titlestr = document.title + ": "
+         + vidname.substring(vidname.lastIndexOf('/') + 1);
+     }
+     document.title = titlestr;
+
+     var vid = document.getElementById('video');
+     console.log("video element:", vid);
+     var source = document.createElement('source');
+     console.log("Setting source to", vidname);
+     source.setAttribute('src', vidname);
+     vid.appendChild(source);
+
+     // The player controls. There's no way to add a button,
+     // like step; the only way is to replace all the controls.s
+
+     // Play/Pause button
+     var playButton = document.getElementById("play-pause-btn");
+     playButton.addEventListener("click", function() {
+         console.log("Play/Pause");
+         if (video.paused == true) {
+             // Play the video
+             video.play();
+
+             // Update the button text to 'Pause'
+             playButton.src = "pix/pause.png";
+         } else {
+             // Pause the video
+             video.pause();
+
+             // Update the button text to 'Play'
+             playButton.src = "pix/play.png";
+         }
+     });
+
+     var stepButton = document.getElementById("step-btn");
+     stepButton.addEventListener("click", function() {
+         var curTime = vid.currentTime ;
+         vid.currentTime += 1/25;
+     });
+
+     // Position Slider
+     var seekBar = document.getElementById("seekbar");
+     // Event listener for the seek bar
+     seekBar.addEventListener("change", function() {
+         // Calculate the new time
+         var time = video.duration * (seekBar.value / 100);
+
+         // Update the video time
+         video.currentTime = time;
+     });
+
+     // Update the seek bar as the video plays
+     video.addEventListener("timeupdate", function() {
+         // Calculate the slider value
+         var value = (100 / video.duration) * video.currentTime;
+
+         // Update the slider value
+         seekBar.value = value;
+     });
+
+     // Fullscreen button
+     var fullScreenButton = document.getElementById("fullscreen-btn");
+     fullScreenButton.addEventListener("click", function() {
+         if (video.requestFullscreen) {
+             video.requestFullscreen();
+         } else if (video.mozRequestFullScreen) {
+             video.mozRequestFullScreen(); // Firefox
+         } else if (video.webkitRequestFullscreen) {
+             video.webkitRequestFullscreen(); // Chrome and Safari
+         }
+     });
+
+     // Firefox doesn't allow autoplay, which is perfectly reasonable.
+     //vid.play();
+
+     initPage();
+ }
+</script>
+
+</head>
+
+<body onload="initVid();">
+
+<div id="page">
+<div id="content">
+
+<h1 id="imgtitle" class="title"></h1>
+
+<div id="video-container">
+<video id="video" width="800" height="600">
+Your browser doesn't support HTML video.
+</video>
+
+<!-- Video Controls -->
+<div id="video-controls">
+
+<img id="play-pause-btn" src="pix/play.png"></a>
+<img id="step-btn"src="pix/step.png"></a>
+<input type="range" id="seekbar" value="0">
+<img id="fullscreen-btn" src="pix/fullscreen.png"></a>
+
+</div>
+</div>
+
+</div>
+</div>
+
+<div id="notes">
+</div>
+
+</body>
+</html>

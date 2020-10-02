@@ -1,7 +1,7 @@
 /* slide stylesheets for HTMLPreso */
 
 /* Import the appropriate color scheme and screen size */
-@import "colors-light.css";
+@import "colors-dark.css";
 @import "screen-1024-1366.css";
 
 #navigation {
@@ -246,7 +246,41 @@ pre b { font-weight: bold; font-size: 1.1em; }
   margin-left: -75px;
 }
 
-blockquote { font-size: .8em;   line-height: 1.3em; }
+blockquote {
+    font-family: Georgia, serif;
+    position: relative;
+    margin: 0.5em;
+    padding: 0.5em 2em 0.5em 3em;
+}
+/* Thanks: http://callmenick.com/post/styling-blockquotes-with-css-pseudo-classes */
+blockquote:before {
+    font-family: Georgia, serif;
+    position: absolute;
+    font-size: 6em;
+    line-height: 1;
+    top: 0;
+    left: 0;
+    content: "\201C";
+}
+blockquote:after {
+    font-family: Georgia, serif;
+    position: absolute;
+   /* display: block; don't use this, it raised the quote too high from the bottom - defeated line-height? */
+    float:right;
+    font-size:6em;
+    line-height: 1;
+    right:-20px;
+    bottom:-0.5em;
+    content: "\201D";
+}
+blockquote footer {
+    padding: 0 2em 0 0;
+    text-align:right;
+}
+blockquote cite:before {
+    content: "\2013";
+}
+
 
 strong { font-weight: bold; text-decoration: underline; }
 
@@ -283,6 +317,12 @@ strong { font-weight: bold; text-decoration: underline; }
   margin-left: 5em;
 }
 
+/* Video player controls */
+#video-controls a:hover {
+  background-color: #444;
+}
+
+/* Print differently */
 @media print {
   body { width: 1024px; }
   #notes, #nexthint { display: none; }
