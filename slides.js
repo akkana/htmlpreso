@@ -2,6 +2,12 @@
 //
 // Slide navigation. List your slides here, in order.
 //
+
+// Help for URL-encoded entities in titles:
+// , %2C     : %3A    <> %3C%3E    () %28%29    & %26    " %22
+// UTF-8 left double quote: %E2%80%9  right double quote: %E2%80%9D
+// https://www.w3schools.com/tags/ref_urlencode.asp
+
 var slides = new Array ("index.html",
                         "what.html",
                         "html.html",
