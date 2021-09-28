@@ -1,7 +1,7 @@
 /* slide stylesheets for HTMLPreso */
 
 /* Import the appropriate color scheme and screen size */
-@import "colors-dark.css";
+@import "colors-light.css";
 @import "screen-1024-1366.css";
 
 #navigation {
@@ -164,10 +164,12 @@ h3 {
   position: absolute; right: .5em; bottom: 3px;
   text-shadow: 3px 3px 3px #000000;
   line-height: 1.2em;
+  font-weight: normal;
 }
 
 #imgcredit, #imgcredit a, .imgcredit {
   font-size: .8em;
+  font-weight: normal;
 }
 
 /* Image credit can also appear somewhere else, like a caption */

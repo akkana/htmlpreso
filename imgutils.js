@@ -40,6 +40,24 @@ function setupImage() {
   }
 
   img = document.getElementById("fullpage");
+  img.addEventListener('load', function() {
+      var imgAspect = this.naturalWidth / this.naturalHeight;
+      var page = document.getElementById("page");
+      var pageWidth = page.clientWidth;
+      var pageHeight = page.clientHeight;
+      if (this.naturalWidth > pageWidth || this.naturalHeight > pageHeight) {
+          var pageAspect = pageWidth / pageHeight;
+          if (imgAspect >= pageAspect) {
+              // width is the determining factor
+              this.style.height *= pageWidth / this.style.width;
+              this.style.width = pageWidth;
+          } else {
+              // height is the determining factor
+              this.style.width *= pageHeight / this.style.height;
+              this.style.height = pageHeight;
+          }
+      }
+  });
   if (imgname) {
     img.src = imgname;
 
