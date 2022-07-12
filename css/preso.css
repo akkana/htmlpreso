@@ -94,7 +94,6 @@ figcaption.big { font-size: 1.1em; font-style: normal; }
 
 /* Style for hints whereever they will be displayed */
 .nexthint {
-  color: blue;
   font-style: italic;
   font-size: 27px;
   line-height: 1.4em;
@@ -339,5 +338,6 @@ strong { font-weight: bold; text-decoration: underline; }
 /* Print differently */
 @media print {
   body { width: 1024px; }
+  #points li { visibility: visible; }
   #notes, #nexthint { display: none; }
 }

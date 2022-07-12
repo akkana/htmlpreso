@@ -1,7 +1,7 @@
 /* -*- mode: javascript; indent-tabs-mode: nil; js-indent-level: 4 -*- */
 
 // JavaScript Slide Presentation software.
-// Copyright 2003-2020 by Akkana Peck.
+// Copyright 2003-2022 by Akkana Peck.
 // This software is licensed under the GNU public license v2 (or later) --
 // Share and enjoy!
 
@@ -483,10 +483,13 @@ function removeNoteElements() {
 function hintNextSlide(hintname) {
     var nexthint = document.getElementById(hintname);
     if (! nexthint) {
-        nexthint = document.createElement("div");
+        var nexthint = document.createElement("div");
         nexthint.id = hintname;
         nexthint.classList.add("nexthint");
         document.body.appendChild(nexthint);
+        var link = document.createElement("a");
+        link.href = slides[curSlide+1];
+        nexthint.appendChild(link);
     }
 
     if (curSlide >= slides.length - 1)    // last slide
@@ -501,9 +504,9 @@ function hintNextSlide(hintname) {
             slash += 1;
         var dot = nextname.lastIndexOf('.');
         if (dot < 0)
-            nexthint.innerHTML = "Next: " + nextname.substring(slash);
+            link.innerHTML = "Next: " + nextname.substring(slash);
         else
-            nexthint.innerHTML = "Next: " + nextname.substring(slash, dot);
+            link.innerHTML = "Next: " + nextname.substring(slash, dot);
     }
 }
 

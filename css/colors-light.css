@@ -13,6 +13,8 @@ a { color: #00f; }
 
 .greyed { color: #678; }
 
+.nogrey .greyed { color: black; }
+
 figcaption { color: lightblue; }
 figcaption a { color: lightblue; }
 figcaption.big { color: yellow; }
@@ -21,7 +23,7 @@ strike { color: #444; }
 
 h1 { color: #700; }
 
-#imgtitle {  color: yellow; }
+#imgtitle {  color: #700;  text-shadow: 3px 3px 3px white; }
 
 #imgcredit, #imgcredit a, .imgcredit {
   color: lightblue;
@@ -39,9 +41,10 @@ pre {
 pre em { color: #ff3; }
 pre b { color: #ff3; }
 
-.popup { color: white; }
+.popup { background: #eee; color: black; }
 
-#nextlink {
+.nexthint {
   background: #644;
   color: white;
 }
+.nexthint a { color: white; }
