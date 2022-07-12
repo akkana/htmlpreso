@@ -170,11 +170,11 @@ function initPoints(num_vis)
         points = pointList.getElementsByTagName("li");
         // Make the first point visible (they should all be invisible initially)
         //points[curPoint].style.visibility = "visible";
-    }
-    while (numvis > 0) {
-        points[curPoint].style.visibility = "visible";
-        curPoint = curPoint + 1;
-        numvis = numvis - 1;
+        while (numvis > 0) {
+            points[curPoint].style.visibility = "visible";
+            curPoint = curPoint + 1;
+            numvis = numvis - 1;
+        }
     }
 
     // Do any other page initialization we need:
@@ -363,7 +363,7 @@ function initPage() {
     if (isPresoWin)
         initPresoPage();
 
-    console.log("isPresoWin?", isPresoWin, "useNotesWin?", useNotesWin);
+    //console.log("isPresoWin?", isPresoWin, "useNotesWin?", useNotesWin);
     // Using a separate notes window?
     if (useNotesWin) {
         // In the main window, remove all the notes/hints pieces.
@@ -473,7 +473,8 @@ function hintNextSlide(hintname) {
 // remove the slide presentation elements, size the body appropriately.
 //
 function initNotesWin() {
-    console.log("initNotesWin");
+    //console.log("initNotesWin");
+
     // If here, it's the popup notes window, not the main preso window.
     // Replace most of the window that isn't notes.
     var node = document.getElementById("body");
