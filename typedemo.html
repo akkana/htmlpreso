@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script src="slides.js"></script>
+  <script src="navigate.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/preso.css">
+  <title>HTML Presentations: "Live" Demo Typing</title>
+  <style>
+pre#typedstuff { min-height: 7.8em; }  /* 1.3em line height * 6 */
+  </style>
+</head>
+
+<body onload="initPage();">
+
+<div id="page">
+<div id="content">
+
+<h1 class="title">"Live" Demo Typing</h1>
+
+<p>
+<i>(Type some random characters here.)</i>
+
+<script language="JavaScript">
+var stuff2type = `If you have some code to show,
+define it as "const stuff2type".
+Then as you pound randomly on the keyboard,
+characters from the multi-line string
+will appear in the slide inside the block
+(e.g. a div or pre) with id 'typedstuff'.`;
+</script>
+
+<pre id="typedstuff">
+</pre>
+
+</div>
+</div>
+
+<div id="notes">
+</div>
+
+</body>
+</html>

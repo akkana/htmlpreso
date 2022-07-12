@@ -13,6 +13,10 @@ var useNotesWin = false;
 
 var curSlide = indexOfPage();
 
+// Variables used for "live demo" typing
+if (stuff2type == undefined)
+    var stuff2type = null;
+var stuffTypingIndex = 0;
 
 //
 // Keypress navigation
@@ -34,12 +38,12 @@ function onKeyDown(e)
 
     // Make sure things like desktop switching don't get caught here:
     if (e.ctrlKey || e.altKey || e.metaKey) {
-        return;
+        return true;
     }
     // Don't do anything for Shift, Ctrl, Alt or W/Meta on their own:
     switch (e.keyCode) {
       case 16: case 17: case 18: case 91:
-        return;
+        return true;
     }
 
     /*
@@ -71,36 +75,26 @@ function onKeyDown(e)
             return false;
         }
 
-        return;
+        return true;
     }
 
-    // Mozilla uses charCode for printable characters, keyCode for unprintables.
-    // Pull out the charCodes first:
-    if (e.charCode) {
-        switch (e.charCode) {
-          case 32:
-            targetWin.nextSlide();
-            e.preventDefault();
-            return false;
-          // The Logitech Presenter sends a period from the "blank screen" btn.
-          // But most presenters seem to send b.
-          case 46:
-            targetWin.blankScreen();
-            e.preventDefault();
-            return false;
-        }
-    }
+    // Next couple clauses shouldn't handle space or printable characters;
+    // wait til after the "live demo typing" clause for that.
 
-    // Now keyCodes. There don't seem to be any cross-browser symbols for these.
+    // keyCodes. There don't seem to be any cross-browser symbols for these.
     switch (e.keyCode) {
       case 32:    // Space
         // In auto-advance mode on the first slide, spacebar starts the countdown.
         if (countdownSecs > 0 && curSlide == 0 && !countdown) {
+            console.log("First spacebar clause");
             countdown = true;
             targetWin.startCountdown(curSlide);
-            return;
+            return false;
         }
-      // else fall through to call nextSlide():
+        // Else break; there's another spacebar clause after we're
+        // done with "live typing demo" mode.
+        break
+
       case 34:    // Page Down
       case 40:    // Arrow Down
       case 39:    // Arrow Right
@@ -126,12 +120,6 @@ function onKeyDown(e)
         e.preventDefault();
         return false;
 
-      case 66:    // b
-      case 190:   // firefox quantum now sends this for .
-        targetWin.blankScreen();
-        e.preventDefault();
-        return false;
-
       // Many presenters toggle between ESC and Shift-F5.
       // I think on PowerPoint it's supposed to toggle slideshow mode.
       // It's not clear if we need to watch for unshifted F5 like this.
@@ -142,11 +130,62 @@ function onKeyDown(e)
         e.preventDefault();
         return false;
 
-      case 83:      // s
       case 46:      // Delete
         countdown = !countdown;
         if (countdown)
             targetWin.startCountdown(null);
+        return false;
+    }
+
+    // Handle "live" typing demo: pound on the keyboard randomly
+    // and the string in stuff2type gets added one character at a time,
+    // making you look like a super-accurate typist. :-)
+    const typedstuff = document.getElementById("typedstuff");
+    if (typedstuff && stuff2type) {
+        var c = stuff2type[stuffTypingIndex++];
+        if (c == undefined) {
+            // Some say "delete stuff2type" works, but it doesn't work for me.
+            stuff2type = null;
+        } else {
+            typedstuff.innerHTML += c;
+        }
+        return false;
+    }
+
+    // Mozilla uses charCode for printable characters, keyCode for unprintables.
+    // Pull out the charCodes:
+    if (e.charCode) {
+        switch (e.charCode) {
+          case 32:
+            targetWin.nextSlide();
+            e.preventDefault();
+            return false;
+          // The Logitech Presenter sends a period from the "blank screen" btn.
+          // But most presenters seem to send b.
+          case 46:
+            targetWin.blankScreen();
+            e.preventDefault();
+            return false;
+        }
+    }
+
+    switch (e.keyCode) {
+      case 32:    // Spacebar
+        targetWin.nextSlide();
+        e.preventDefault();
+        return false;
+
+      case 66:    // b
+      case 190:   // firefox quantum now sends this for .
+        targetWin.blankScreen();
+        e.preventDefault();
+        return false;
+
+      case 83:      // s
+        countdown = !countdown;
+        if (countdown)
+            targetWin.startCountdown(null);
+        return false;
     }
 }
 
